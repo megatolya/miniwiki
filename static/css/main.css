@@ -1,0 +1,50 @@
+
+.sidebar-nav {
+  padding: 9px 0;
+}
+.navbar {
+  margin-bottom: 0;
+}
+.btn-group-wiki-controls {
+  margin-top: -7px;
+}
+.btn-wiki-edit {
+  margin-left: 30px;
+}
+.wiki-editor {
+  display: none;
+}
+.wiki-editor textarea {
+  height: 800px;
+
+}
+.alerts {
+  opacity: 0.9;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+}
+.login-form{
+  left: 0;
+  position: absolute;
+  margin: auto;
+  top: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.login-form .btn {
+  padding: 10px 37px;
+  display: block;
+  margin: 0 auto;
+}
+.copyright {
+  text-align: center;
+  color: #999;
+}
+.wiki-children {
+    border: 1px solid #DDD;
+    padding: 7px 42px;
+    display: inline-block;
+}

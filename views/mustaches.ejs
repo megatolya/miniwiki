@@ -1,0 +1,49 @@
+<script type="text/html" class="t-alert">
+    <div id="{{id}}" class="alert alert-block">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+        <h4>{{head}}</h4>
+        {{text}}
+    </div>
+</script>
+<script type="text/html" class="t-wiki">
+<ul class="breadcrumb">
+    <li>
+        <a href="/">Wiki</a>
+        <span class="divider">/</span>
+    </li>
+    {{#breadCrumbs}}
+    <li {{#last}}class="active"{{/last}}>
+        <a class="wiki-link" href="/wiki/{{id}}">{{header}}</a>
+        <span class="divider {{#last}}hide{{/last}}">/</span>
+    </li>
+    {{/breadCrumbs}}
+    <div class="btn-group pull-right btn-group-wiki-controls">
+        <a class="btn    btn-wiki-edit" data-act="edit" href="#"><i class="icon-pencil"></i> Редактировать</a>
+        <a class="btn" href="#"><i class="icon-remove"></i> Удалить</a>
+    </div>
+</ul>
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span12 wiki-article">
+            <h1>{{header}}</h1>
+            {{#children.length}}
+                <div class ="wiki-children">
+                    <h5>Дочерние статьи:</h5>
+                    {{#children}}
+                        <a class="wiki-link" href="/wiki/{{id}}">{{header}}</a><br>
+                    {{/children}}
+                </div>
+            {{/children.length}}
+            <div>
+            {{text}}
+            </div>
+
+        </div>
+    </div>
+    <div class="wiki-editor">
+        <textarea class="span12">
+            {{text}}
+        </textarea>
+    </div>
+</div>
+</script>

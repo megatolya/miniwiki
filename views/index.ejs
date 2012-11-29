@@ -1,0 +1,13 @@
+<% include header %>
+<div class="container-fluid body">
+    <div class="row-fluid">
+	    <h1>Добро пожаловать!</h1>
+	    <p>Список всех статей:</p>
+	    <ul>
+	        <% articles.forEach(function(article){ %>
+	        <li><a class="wiki-link" href="/wiki/<%= article.id %>"><%= article.header %></a></li>
+	        <% }) %>
+	    </ul>
+    </div>
+</div>
+<% include footer %>

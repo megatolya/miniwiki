@@ -1,0 +1,23 @@
+<% include header %>
+    <ul class="breadcrumb">
+        <li><a href="#">Кладовка</a> <span class="divider">/</span></li>
+        <li><a href="#">Вики</a> <span class="divider">/</span></li>
+        <li class="active">Справка</li>
+    <div class="btn-group pull-right btn-group-wiki-controls">
+        <a class="btn    btn-wiki-edit" data-act="edit" href="#"><i class="icon-pencil"></i> Редактировать</a>
+        <a class="btn" href="#"><i class="icon-remove"></i> Удалить</a>
+    </div>
+    </ul>
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="span12 wiki-text">
+                 {{header}}
+                 {{text}}
+                </div>
+            </div>
+            <div class="wiki-editor">
+                <textarea class="span12">
+                    {{text}}
+                </textarea>
+            </div>
+<% include footer %>

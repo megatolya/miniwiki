@@ -1,0 +1,15 @@
+{
+  "name": "home-wiki",
+  "description": "my private wiki",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "express": "3.x",
+    "ejs": "x",
+    "mysql": "x",
+    "orm": "x",
+    "ejs": "x",
+    "ejs-locals": "x",
+    "socket.io" : "x"
+  }
+}
