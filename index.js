@@ -6,9 +6,10 @@ var express = require('express'),
 	port = 3000,
 	count = 0,
 	io = require('socket.io').listen(server);
-	db = require('./db');
-	sys = require('sys');
+	db = require('./db'),
+	handlers = require('./handlers');
 
+//req.params.id
 io.set('log level', 1);
 server.listen(port);
 app.enable('trust proxy');
@@ -23,6 +24,7 @@ app.use(function(a) {
 	}
 	a.next();
 });
+
 app.use(express.errorHandler({
     dumpExceptions: true,
     showStack: true
@@ -35,53 +37,43 @@ app.use('/static', express.static('static'));
 
 
 
-app.get('/', function (req, res) {
 
+app.get('/', handlers.index);
 
-	if (req.session.user) {
-		db.articles.find({parent:0}, function (articles) {
-			res.render('index', {login:req.session.login, articles: articles});
-		});
-	}
-	else{
-		res.redirect('/login');
-	}
+app.get('/logout', handlers.logout);
 
-});
+app.get('/login', handlers.login);
 
-app.get('/logout', function (req, res) {
-	req.session = null;
-	res.redirect('/');
-});
+app.get('/wiki/:id', handlers.index);
 
-app.get('/login', function (req, res) {
-	res.render('login');
-});
-
-app.get('/wiki/:id', function(req, res) {
-	res.json({resp: req.params.id});
-})
-
-app.post('/', function (req, res){
-	console.log('Запрос на авторизацию пользователя ' + req.body.login);
-	db.users.find({
-		login: req.body.login,
-		password: req.body.pass
-	}, function (users) {
-		if(!users){
-			res.redirect('/login');
-			console.log('Неверные данные');
-			return false;
-		}
-		req.session = { user: users[0].id, login:users[0].login };
-		console.log('Залогинился ' + req.body.login);
-		res.redirect('/');
-	});
-
-});
+app.post('/', handlers.auth);
 
 io.sockets.on('connection', function (socket) {
   console.log('Новый транспорт #', socket.id);
+
+  socket.on('saveWikiPage', function (page) {
+  	db.articles.find({id: page.id}, function(pages) {
+  		pages[0].header = page.header;
+  		pages[0].text = page.text;
+  		pages[0].save(function (error, copy) {
+  			if (error)
+  				console.log(error);
+
+  			socket.emit('wikiPageSaved', page.timeout);
+  		});
+  	});
+  });
+
+  socket.on('newWikiPage', function (data) {
+  	var page = new db.articles(data);
+  	page.save(function (err, copy) {
+	    if (!err) {
+	        console.log('Новая вики страница #' + page.id);
+	        socket.emit('newWikiPageSave', { id : page.id, timeout: data.timeout});
+	    }
+	});
+  });
+
   socket.on('getWikiPage', function(data) {
 	console.log('запрос wiki страницы #' , data.id);
   	db.articles.find({ id : data.id}, function (article) {
@@ -91,18 +83,19 @@ io.sockets.on('connection', function (socket) {
   				article.breadCrumbs = breadCrumbs;
   				if (children) {
 	  				article.children = [];
-		  			for (var i = 0; i <= children.length - 1; i++) {
+		  			for (var i = children.length - 1; i >=  0; i--) {
 		  				article.children[i] = {}
 		  				article.children[i].header = children[i].header;
 		  				article.children[i].id = children[i].id;
 		  			};
 	  			}
+	  			article.timeout = data.timeout;
 	  			socket.emit('buildWikiPage', article);
   			});
   		});
-
   	});
   });
+
   socket.on('disconnect', function () {
   	console.log('Отключился транспорт');
    });

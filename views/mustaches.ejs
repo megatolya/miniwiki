@@ -17,8 +17,11 @@
         <span class="divider {{#last}}hide{{/last}}">/</span>
     </li>
     {{/breadCrumbs}}
+
     <div class="btn-group pull-right btn-group-wiki-controls">
-        <a class="btn    btn-wiki-edit" data-act="edit" href="#"><i class="icon-pencil"></i> Редактировать</a>
+        <a class="btn btn-wiki-add-child" href="#"><i class="icon-plus"></i> Добавить подстраницу</a>
+        <a class="btn btn-danger btn-wiki-dont-add-child" href="#"><i class="icon-plus"></i> Не добавлять</a>
+        <a class="btn btn-wiki-edit" data-act="edit" href="#"><i class="icon-pencil"></i> Редактировать</a>
         <a class="btn" href="#"><i class="icon-remove"></i> Удалить</a>
     </div>
 </ul>
@@ -40,10 +43,14 @@
 
         </div>
     </div>
-    <div class="wiki-editor">
-        <textarea class="span12">
-            {{text}}
-        </textarea>
-    </div>
+    <form class="wiki-editor">
+        <input class="span12 wiki-header-edit" type="text" value="{{header}}">
+        <textarea class="span12">{{text}}</textarea>
+    </form>
+    <form class="wiki-new-page">
+        <input name="parent" type="hidden" value="{{id}}">
+        <input name="header" class="span12 wiki-header-edit" type="text" placeholder="Заголовок">
+        <textarea name="text" class="span12" placeholder="Какой-то умный текст..."></textarea>
+    </form>
 </div>
 </script>
