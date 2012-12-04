@@ -4,7 +4,6 @@ function alert(head, text) {
 
 //если передали id счетчика то отключаем его а если нет то создаем новый
 function loading(id) {
-console.log(id ? id : 'хер');
     if(id) {
       $('.paranja').hide();
       $('.body').css('opacity', '1');
@@ -42,11 +41,20 @@ $.fn.serializeObject = function () {
 var Wiki = {
   server : {
     getWikiPage : function (id) {
+      wikiId = id;
+      History.pushState(null, null, '/wiki/' + id);
       socket.emit('getWikiPage', { id: id, timeout: loading() });
     },
     saveWikiPage :  function (page) {
       page.timeout = loading();
       socket.emit('saveWikiPage', page);
+    },
+    remove : function (id) {
+      var data = {};
+      data.id = id;
+
+      data.timeout = loading();
+      socket.emit('removePage', data);
     }
   },
   interface : {
@@ -64,6 +72,17 @@ var Wiki = {
       var id = +$(this).attr('href').replace('/wiki/' , '');
       Wiki.server.getWikiPage(id);
       return false;
+    },
+    removeClick : function () {
+      Wiki.server.remove(wikiId);
+      return false;
+    },
+    pageRemoved : function (data) {
+      console.log(data);
+      loading(data.timeout);
+      //TODO if parent == 0
+      alert('страница удалена');
+      Wiki.server.getWikiPage(data.parent);
     },
     editButtonClick : function () {
       if($(this).data('act')=='edit') {
@@ -85,30 +104,63 @@ var Wiki = {
         $edit.click();
       }
       if (!$(this).hasClass('btn-primary')) {
+        $('.btn-wiki-add-child').addClass('btn-primary');
         $(this).addClass('btn-primary');
         Wiki.interface.showNewPager();
       } else {
-        $(this).removeClass('btn-primary');
+
         var newWikiPage = $('.wiki-new-page').serializeObject();
-        newWikiPage.timeout = loading();
-        socket.emit('newWikiPage', newWikiPage);
+        if (newWikiPage.header != '') {
+          $(this).removeClass('btn-primary');
+          newWikiPage.timeout = loading();
+          socket.emit('newWikiPage', newWikiPage);
+        } else {
+          alert('Пустой заголовок');
+        }
       }
-      return false
+      return false;
+    },
+    dontEditClick : function () {
+      Wiki.interface.hideMarkDowner();
+      return false;
+    },
+    newPassClick : function () {
+      var data = {};
+      data.oldPass = prompt('Старый пароль');
+      data.newPass = prompt('Новый пароль');
+      data.timeout = loading();
+      $.ajax({
+        url: '/change-pass/',
+        type: 'POST',
+        data : data,
+        success : function(resp) {
+          loading(data.timeout);
+          if (resp.status == 'ok') {
+            alert('Пароль изменен');
+          } else {
+            alert('Неверный старый пароль');
+          }
+        },
+        error : function() {
+          alert('Неизвестная ошибка');
+        }
+      });
+      return false;
     },
     buildWikiPage : function (data) {
       //TODO reverse in backend
-      console.log(data);
       loading(data.timeout);
       data.breadCrumbs.reverse();
-      $('.body').html( Mustache.render($('.t-wiki').html(), data));
-      setTimeout(function() {
-        $('.btn-wiki-dont-add-child').hide();
-      }, 0);
+      var mdHtml = Wiki.md.generateHtml(data.text);
+      var html = Mustache.render($('.t-wiki').html(), data);
+
+
+      $('.body').html(html);
+      $('.wiki-article-text').html(mdHtml);
     },
     showMarkDowner : function () {
       $('.wiki-article').hide();
       $('.wiki-new-page').hide();
-      $('.btn-wiki-dont-add-child').hide();
       $('.wiki-editor').show();
       $('.btn-wiki-add-child').removeClass('btn-primary');
 
@@ -116,31 +168,30 @@ var Wiki = {
     hideMarkDowner : function () {
       $('.wiki-editor').hide();
       $('.wiki-new-page').hide();
-      $('.btn-wiki-dont-add-child').hide();
       $('.wiki-article').show();
       $('.btn-wiki-add-child').removeClass('btn-primary');
     },
     showNewPager : function () {
       $('.wiki-article').hide();
       $('.wiki-editor').hide();
-      $('.btn-wiki-dont-add-child').show();
       $('.wiki-new-page').show();
     },
     hideNewPager : function() {
       $('.wiki-editor').hide();
-      $('.btn-wiki-dont-add-child').hide();
       $('.wiki-new-page').hide();
       $('.wiki-article').show();
       $('.btn-wiki-add-child').removeClass('btn-primary');
     },
-    newWikiPageSaved : function (data) {
+    newPageSaved : function (data) {
       alert('Создана новая страница #' + data.id);
       loading(data.timeout);
       Wiki.server.getWikiPage(data.id);
     },
-    wikiPageSaved : function (timeout) {
-      loading(timeout);
+    PageSaved : function (data) {
+      console.log(data);
+      loading(data.timeout);
       alert('Сохранено');
+      Wiki.server.getWikiPage(data.id);
     }
   },
   md : {
@@ -208,9 +259,14 @@ $(function() {
 
   $('.wiki-link').live('click', Wiki.interface.wikiLinkClick);
   $('.btn-wiki-edit').live('click', Wiki.interface.editButtonClick);
-  $('.btn-wiki-add-child').live('click', Wiki.interface.addChildPageClick)
+  $('.btn-wiki-add-child').live('click', Wiki.interface.addChildPageClick);
+  $('.btn-wiki-dont-add-child').live('click', Wiki.interface.hideNewPager);
+  $('.btn-wiki-remove').live('click', Wiki.interface.removeClick);
+  $('.btn-new-pass').click(Wiki.interface.newPassClick);
+  $('.btn-wiki-dont-edit').live('click', Wiki.interface.dontEditClick);
 
-  socket.on('newWikiPageSave', Wiki.interface.newWikiPageSaved);
+  socket.on('newWikiPageSave', Wiki.interface.newPageSaved);
   socket.on('buildWikiPage', Wiki.interface.buildWikiPage);
-  socket.on('wikiPageSaved', Wiki.interface.wikiPageSaved);
+  socket.on('wikiPageSaved', Wiki.interface.PageSaved);
+  socket.on('pageRemoved', Wiki.interface.pageRemoved);
 });

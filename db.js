@@ -1,5 +1,5 @@
 var orm = require('orm'),
-	articles,
+	pages,
 	users;
 
 var db = orm.connect('mysql://root:123@localhost/wiki', function (success, db) {
@@ -8,7 +8,7 @@ var db = orm.connect('mysql://root:123@localhost/wiki', function (success, db) {
         return;
     }
     console.log('База подключена');
-	articles = db.define('articles', {
+	pages = db.define('pages', {
 	    'id'        : { 'type': 'int' },
 	    'header'    : { 'type': 'string'},
 	    'text'      : { 'type': 'string' },
@@ -21,9 +21,9 @@ var db = orm.connect('mysql://root:123@localhost/wiki', function (success, db) {
 
 	    }
 	});
-	articles.sync();
+	pages.sync();
 
-	articles.getTree = function (article, array, callback) {
+	pages.getTree = function (article, array, callback) {
 		var self = this;
 
 		array.push(article);
@@ -59,5 +59,5 @@ var db = orm.connect('mysql://root:123@localhost/wiki', function (success, db) {
 	users.sync();
 
 	exports.users = users;
-	exports.articles = articles;
+	exports.pages = pages;
 });

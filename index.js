@@ -44,28 +44,38 @@ app.get('/logout', handlers.logout);
 
 app.get('/login', handlers.login);
 
-app.get('/wiki/:id', handlers.index);
+app.get('/wiki/:id', handlers.wiki);
+
+app.get('/wiki', handlers.index);
+
+app.post('/change-pass/', handlers.changePass);
 
 app.post('/', handlers.auth);
+
+app.get('*', handlers.notFound);
+
+
+
 
 io.sockets.on('connection', function (socket) {
   console.log('Новый транспорт #', socket.id);
 
   socket.on('saveWikiPage', function (page) {
-  	db.articles.find({id: page.id}, function(pages) {
+  	db.pages.find({id: page.id}, function(pages) {
   		pages[0].header = page.header;
   		pages[0].text = page.text;
   		pages[0].save(function (error, copy) {
   			if (error)
   				console.log(error);
 
-  			socket.emit('wikiPageSaved', page.timeout);
+        console.log('Изменена страница #' + page.id);
+  			socket.emit('wikiPageSaved', page);
   		});
   	});
   });
 
   socket.on('newWikiPage', function (data) {
-  	var page = new db.articles(data);
+  	var page = new db.pages(data);
   	page.save(function (err, copy) {
 	    if (!err) {
 	        console.log('Новая вики страница #' + page.id);
@@ -75,30 +85,49 @@ io.sockets.on('connection', function (socket) {
   });
 
   socket.on('getWikiPage', function(data) {
-	console.log('запрос wiki страницы #' , data.id);
-  	db.articles.find({ id : data.id}, function (article) {
-  		article = article[0];
-  		db.articles.find({parent: article.id}, function(children) {
-  			db.articles.getTree(article, [], function(breadCrumbs) {
-  				article.breadCrumbs = breadCrumbs;
+	console.log('Запрос wiki страницы #' , data.id);
+  	db.pages.find({ id : data.id}, function (page) {
+  		page = page[0];
+  		db.pages.find({parent: page.id}, function(children) {
+  			db.pages.getTree(page, [], function(breadCrumbs) {
+  				page.breadCrumbs = breadCrumbs;
   				if (children) {
-	  				article.children = [];
+	  				page.children = [];
 		  			for (var i = children.length - 1; i >=  0; i--) {
-		  				article.children[i] = {}
-		  				article.children[i].header = children[i].header;
-		  				article.children[i].id = children[i].id;
+		  				page.children[i] = {}
+		  				page.children[i].header = children[i].header;
+		  				page.children[i].id = children[i].id;
 		  			};
 	  			}
-	  			article.timeout = data.timeout;
-	  			socket.emit('buildWikiPage', article);
+	  			page.timeout = data.timeout;
+	  			socket.emit('buildWikiPage', page);
   			});
   		});
   	});
   });
 
+  socket.on('removePage', function(data) {
+    //TODO удаление всех детей
+    db.pages.find({ id:data.id}, function(pages) {
+      var resp = {};
+
+      resp.parent = pages[0].parent;
+      resp.timeout = data.timeout;
+      pages[0].remove(function(success) {
+        if (success) {
+          console.log('Удалена страница #' + data.id);
+          socket.emit('pageRemoved', resp);
+        }
+      })
+    });
+  });
+
+
   socket.on('disconnect', function () {
   	console.log('Отключился транспорт');
    });
+
+
 });
 
 

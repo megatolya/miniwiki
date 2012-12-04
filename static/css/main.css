@@ -76,3 +76,15 @@ top: 0;
 bottom: 0;
 margin: auto;
 }
+.wiki-tools {
+  opacity: 0.3;
+}
+.wiki-tools:hover {
+  opacity: 1;
+}
+.wiki-new-page textarea {
+  height:800px;
+}
+.alert {
+  margin-bottom: 0;
+}

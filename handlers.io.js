@@ -1,5 +1,5 @@
 exports.newWikiPage = function (data) {
-	var page = new db.articles(data);
+	var page = new db.pages(data);
 	page.save(function (err, copy) {
 	    if (!err) {
 	        console.log('Новая вики страница #' + page.id);
@@ -9,10 +9,10 @@ exports.newWikiPage = function (data) {
 };
 exports.getWikiPage = function(data) {
 	console.log('запрос wiki страницы #' , data.id);
-  	db.articles.find({ id : data.id}, function (article) {
+  	db.pages.find({ id : data.id}, function (article) {
   		article = article[0];
-  		db.articles.find({parent: article.id}, function(children) {
-  			db.articles.getTree(article, [], function(breadCrumbs) {
+  		db.pages.find({parent: article.id}, function(children) {
+  			db.pages.getTree(article, [], function(breadCrumbs) {
   				article.breadCrumbs = breadCrumbs;
   				if (children) {
 	  				article.children = [];

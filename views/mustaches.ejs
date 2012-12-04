@@ -18,11 +18,10 @@
     </li>
     {{/breadCrumbs}}
 
-    <div class="btn-group pull-right btn-group-wiki-controls">
+    <div class="btn-group wiki-tools pull-right btn-group-wiki-controls">
         <a class="btn btn-wiki-add-child" href="#"><i class="icon-plus"></i> Добавить подстраницу</a>
-        <a class="btn btn-danger btn-wiki-dont-add-child" href="#"><i class="icon-plus"></i> Не добавлять</a>
         <a class="btn btn-wiki-edit" data-act="edit" href="#"><i class="icon-pencil"></i> Редактировать</a>
-        <a class="btn" href="#"><i class="icon-remove"></i> Удалить</a>
+        <a class="btn btn-wiki-remove" href="#"><i class="icon-remove"></i> Удалить</a>
     </div>
 </ul>
 <div class="container-fluid">
@@ -37,17 +36,28 @@
                     {{/children}}
                 </div>
             {{/children.length}}
-            <div>
-            {{text}}
+            <div class="wiki-article-text">
             </div>
 
         </div>
     </div>
     <form class="wiki-editor">
-        <input class="span12 wiki-header-edit" type="text" value="{{header}}">
-        <textarea class="span12">{{text}}</textarea>
+    <a class="btn btn-wiki-edit btn-success" data-act="save" href="#">
+        <i class="icon-ok icon-white"></i> Сохранить
+    </a>
+    <a class="btn btn-wiki-dont-edit btn-danger" href="#">
+        Не сохранять
+    </a>
+    <br>
+    <br>
+
+        <input name="header" class="span12 wiki-header-edit" type="text" value="{{header}}">
+        <textarea name="text" class="span12">{{text}}</textarea>
     </form>
     <form class="wiki-new-page">
+        <a class="btn btn-wiki-add-child  btn-primary" href="#">Добавить</a>
+        <a class="btn btn-danger btn-wiki-dont-add-child" href="#">Не добавлять</a>
+        <br><br>
         <input name="parent" type="hidden" value="{{id}}">
         <input name="header" class="span12 wiki-header-edit" type="text" placeholder="Заголовок">
         <textarea name="text" class="span12" placeholder="Какой-то умный текст..."></textarea>
