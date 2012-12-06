@@ -196,17 +196,32 @@ var Wiki = {
   },
   md : {
     generateHtml : function(md) {
-      var strs = md.split('\n'),
-          regs = {
+
+      var regs = {
             h1 : /^#/i,
             h2 : /^##/i,
             h3 : /^###/i,
             h4 : /^####/i,
-            h5 : /^#####/i
+            h5 : /^#####/i,
           },
           html = '';
 
+      var globalRegs = {
+          code : /`{3}(?:(.*$)\n)?([\s\S]*)`{3}/m,
+          link : /(\[((?:\[[^\]]*\]|[^\[\]])*)\]\([ \t]*()<?((?:\([^)]*\)|[^()\s])*?)>?([ \t]*)((['"])(.*?)\6[ \t]*)?\))/g
+      };
 
+      while (globalRegs.code.test(md)) {
+        md = md.replace(globalRegs.code, function(str, lang, code, lol) {
+          return '<pre>' + code + '</pre>';
+        });
+      };
+
+      while (globalRegs.link.test(md)) {
+        md = md.replace(globalRegs.link, '<a href="$4">$2</a>');
+      };
+
+      var strs = md.split('\n');
       $(strs).each(function (index, str) {
         str = $.trim(str);
 
@@ -229,6 +244,7 @@ var Wiki = {
         }
         html += str;
       });
+
 
       return html;
     }

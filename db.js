@@ -47,8 +47,7 @@ var db = orm.connect('mysql://root:123@localhost/wiki', function (success, db) {
 	users = db.define('users', {
 		'id'          : { 'type': 'int' },
 	    'login'       : { 'type': 'string'},
-	    'password'    : { 'type': 'string' },
-	    'params'      : { 'type': 'object' }
+	    'password'    : { 'type': 'string' }
 	}, {
 		'methods' : {
 			'getId' : function () {
