@@ -12,7 +12,6 @@ npm install
 vim config.js #поменять настройки
 vim views/scripts.js #поставить нужный порт и домен
 sudo node server.js
-
 ```
 
 ###TODO
