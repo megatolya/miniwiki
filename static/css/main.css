@@ -1,4 +1,3 @@
-
 .sidebar-nav {
   padding: 9px 0;
 }
@@ -87,4 +86,7 @@ margin: auto;
 }
 .alert {
   margin-bottom: 0;
+}
+.wiki-stuff {
+  margin-top: 40px;
 }

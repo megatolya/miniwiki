@@ -1,0 +1,11 @@
+#Установка
+
+`git clone git://github.com/megatolya/miniwiki.git`
+
+`cd miniwiki`
+
+`npm install`
+
+`vim config.js`
+
+`sudo node server.js`

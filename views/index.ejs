@@ -1,16 +1,21 @@
 <% include header %>
-<div class="container-fluid body">
+<div class="body">
     <div class="row-fluid">
-    	<div class="well">
-	    	<h1>Добро пожаловать!</h1>
-
-		    <h2>Все разделы:</h2>
-		    <ul>
-		        <% pages.forEach(function(page){ %>
-		        <li><h3><a class="wiki-link" href="/wiki/<%= page.id %>"><%= page.header %></a></h3></li>
-		        <% }) %>
-		    </ul>
-	    </div>
+        <div class="well">
+            <h1>:-)</h1>
+            <h2>Все разделы:</h2>
+            <ul>
+                <% pages.forEach(function(page){ %>
+                <li><h3><a href="/wiki/<%= page.path %>"><%= page.name %></a></h3></li>
+                <% }) %>
+            </ul>
+        </div>
     </div>
+</div>
+<div class="well">
+<button class="add-new-section btn btn-mini">Добавить новый раздел</button>
+<button class="say-to-all btn btn-mini">Сообщение всем</button>
+<a href="/tree" class="btn btn-mini" >Структура вики</a>
+<a href="/log" class="btn btn-mini" >Логгирование</a>
 </div>
 <% include footer %>

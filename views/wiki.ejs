@@ -1,23 +1,70 @@
 <% include header %>
-    <ul class="breadcrumb">
-        <li><a href="#">Кладовка</a> <span class="divider">/</span></li>
-        <li><a href="#">Вики</a> <span class="divider">/</span></li>
-        <li class="active">Справка</li>
-    <div class="btn-group pull-right btn-group-wiki-controls">
-        <a class="btn    btn-wiki-edit" data-act="edit" href="#"><i class="icon-pencil"></i> Редактировать</a>
-        <a class="btn" href="#"><i class="icon-remove"></i> Удалить</a>
+<ul class="breadcrumb">
+    <li>
+        <a href="/">Wiki</a>
+        <span class="divider">/</span>
+    </li>
+    <% page.breadCrumbs.forEach(function(crumb){ %>
+    <li>
+        <a href="/wiki<%= crumb.url %>"><%= crumb.title %></a>
+        <span class="divider">/</span>
+    </li>
+    <% }); %>
+    <div class="btn-group wiki-tools pull-right btn-group-wiki-controls">
+        <a class="btn btn-wiki-add-child" href="#"><i class="icon-plus"></i> Добавить подстраницу</a>
+        <a class="btn btn-wiki-edit" data-act="edit" href="#"><i class="icon-pencil"></i> Редактировать</a>
+        <a class="btn btn-wiki-remove" href="#"><i class="icon-remove"></i> Удалить</a>
     </div>
-    </ul>
-        <div class="container-fluid">
-            <div class="row-fluid">
-                <div class="span12 wiki-text">
-                 {{header}}
-                 {{text}}
+</ul>
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span12 wiki-article">
+            <div class="wiki-article-text">
+                <%- page.text %>
+            </div>
+             <% if (page.children.length > 0) { %>
+                <div class ="wiki-children">
+                    <h5>Дочерние статьи:</h5>
+                    <% page.children.forEach(function(child) { %>
+                        <a href="/wiki/<%= page.currentUrl %><%= child %>"><%= child %></a><br>
+                    <% }); %>
                 </div>
-            </div>
-            <div class="wiki-editor">
-                <textarea class="span12">
-                    {{text}}
-                </textarea>
-            </div>
+            <% } %>
+            <% if (page.files.length > 0) { %>
+                <div class ="wiki-children">
+                    <h5>Прекрепленные файлы:</h5>
+                    <% page.files.forEach(function(file) { %>
+                        <a href="/wiki/<%= page.currentUrl %><%= file %>"><%= file %></a><br>
+                    <% }); %>
+                </div>
+            <% } %>
+        </div>
+    </div>
+    <form class="wiki-editor">
+    <a class="btn btn-wiki-edit btn-success" data-act="save" href="#">
+        <i class="icon-ok icon-white"></i> Сохранить
+    </a>
+    <a class="btn btn-wiki-dont-edit btn-danger" href="#">
+        Не сохранять
+    </a>
+    <br>
+    <br>
+        <input name="header" class="span12 wiki-header-edit" type="text" value="<%= page.header %>">
+        <textarea name="text" class="span12"><%= page.clearText %></textarea>
+    </form>
+    <form class="wiki-new-page">
+        <a class="btn btn-wiki-add-child  btn-primary" href="#">Добавить</a>
+        <a class="btn btn-danger btn-wiki-dont-add-child" href="#">Не добавлять</a>
+        <br><br>
+        <input name="header" class="span12 wiki-header-edit" type="text" placeholder="Заголовок">
+        <textarea name="text" class="span12" placeholder="Какой-то умный текст..."></textarea>
+    </form>
+</div>
+<div class="well wiki-stuff">
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="file">
+        <input type="hidden" name="referer" value="<%= page.currentUrl %>">
+        <input type="submit" class="btn btn-mini" value="Прикрепить">
+    </form>
+</div>
 <% include footer %>

@@ -10,5 +10,6 @@ node_modules/
 pids
 logs
 results
-
+wiki_files/*
+!wiki_files/miniwiki
 npm-debug.log
