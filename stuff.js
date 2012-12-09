@@ -52,8 +52,12 @@ function getFilesOfPage (path, callback) {
 
         if (files) {
             files.forEach(function(file){
-                if (file != currentDir + wikiFormat && getExtension(file)!=''){
-                    children.push(file);
+                if (file != currentDir + wikiFormat && getExtension(file)){
+                    if (getExtension(file) == 'img') {
+                        children.push({name: file, type:'img'});
+                    } else {
+                        children.push({name: file, type:'file'});
+                    }
                 }
             });
         } else {
@@ -76,7 +80,17 @@ function removeLastDirOfPath (path) {
 
 function getExtension(filename) {
         var i = filename.lastIndexOf('.');
-        return (i < 0) ? '' : filename.substr(i);
+        if (i>0) {
+            var ext =filename.substr(i);
+            var images = ['.gif', '.tiff', '.jpeg', '.jpg', '.bmp'];
+            if (images.indexOf(ext) >= 0) {
+                return 'img';
+            } else {
+                return 'file';
+            }
+        } else {
+            return false;
+        }
 };
 
 function isFileRequested (path) {
@@ -96,6 +110,7 @@ function log (msg, socket) {
         socket.broadcast.emit('log', msg);
     }
 };
+
 
 exports.log = log;
 exports.getExtension = getExtension;

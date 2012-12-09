@@ -46,9 +46,13 @@ exports.index = function (req, res) {
             var i = 0;
             if (folders) {
                 folders.forEach(function(folder) {
-                    pages[i++] = { path: folder, name: folder};
+                    if(folder!='index.wiki')
+                        pages[i++] = { path: folder, name: folder};
                 });
-                res.render('index', {login:req.session.login, pages: pages});
+                fs.readFile(root + 'index.wiki', encoding, function (err, indexText) {
+                    indexText = md(indexText);
+                    res.render('index', {login:req.session.login, pages: pages, text: indexText});
+                })
             } else {
                 res.render('404');
             }
@@ -111,7 +115,6 @@ exports.wiki = function (req, res) {
         if (!stuff.isFileRequested(url)) {
             if (url) {
                 url = url[url.length-1] == '/' ? url.slice(0, url.length-1) : url;
-                console.log(url);
                 url = url.replace('/wiki/', '');
             } else {
                 res.render('404');
@@ -125,7 +128,7 @@ exports.wiki = function (req, res) {
                     return;
                 }
                 var page = {};
-                page.text = md(content, true);
+                page.text = md(content);
                 page.clearText = content;
                 page.header = fileName;
                 page.breadCrumbs = stuff.getBreadCrumbs(url);
@@ -139,7 +142,16 @@ exports.wiki = function (req, res) {
                 });
             });
         } else {
-            res.sendfile(root + url.replace('/wiki/', ''));
+
+            var reg=/\/remove\/.*/;
+            if (reg.test(url)) {
+                fs.unlink(root + url.replace('/remove/', '') ,function (err) {
+                    if (err) throw err;
+                    res.redirect('/wiki');
+                });
+            } else {
+                res.sendfile(root + url.replace('/wiki/', ''));
+            }
         }
     }
     else{

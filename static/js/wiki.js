@@ -55,6 +55,10 @@ var Wiki = {
         },
         sayToAll: function (msg) {
             socket.emit('sayToAll', msg)
+        },
+        removeFile : function (url) {
+            var data = { url : url, timeout: loading()};
+            socket.emit('removeFile', data);
         }
     },
     interface : {
@@ -113,6 +117,11 @@ var Wiki = {
                 }
                 return false;
         },
+        removeFileClick : function () {
+            var url = $(this).attr('href');
+            Wiki.server.removeFile(url);
+            return false;
+        },
         addChildPageClick : function () {
             var $edit = $('.btn-wiki-edit');
             if ($edit.data('act') == 'save') {
@@ -141,7 +150,10 @@ var Wiki = {
             return false;
         },
         redirect: function (url) {
-            window.location.href = url;
+            if (url)
+                window.location.href = url;
+            else
+                window.location.reload();
         },
         showMarkDowner : function () {
             $('.wiki-article').hide();
@@ -179,6 +191,7 @@ $(function() {
     $('.btn-wiki-dont-edit').click(      Wiki.interface.dontEditClick);
     $('.add-new-section').click(         Wiki.interface.newSectionClick);
     $('.say-to-all').click(              Wiki.interface.sayToAllClick);
+    $('.wiki-remove-file').click(        Wiki.interface.removeFileClick);
 
     socket.on('redirect',     Wiki.interface.redirect);
     socket.on('alert',        Wiki.interface.alertFromServer);

@@ -13,3 +13,4 @@ results
 wiki_files/*
 !wiki_files/miniwiki
 npm-debug.log
+urls.txt

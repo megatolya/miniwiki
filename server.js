@@ -17,6 +17,10 @@ app.use(express.errorHandler({
     dumpExceptions: true,
     showStack: true
 }));
+app.use(function(req, res, next){
+  console.log('%s %s', req.method, req.url);
+  next();
+});
 app.use(express.cookieParser('121'));
 app.use(express.cookieSession('121'));
 app.use(express.bodyParser());
@@ -39,4 +43,3 @@ io.sockets.on('connection', ioHandlers.handlers);
 
 server.listen(config.port);
 console.log('Приложение работает по адресу http://localhost:' + config.port);
-

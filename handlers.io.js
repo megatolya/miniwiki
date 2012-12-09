@@ -66,6 +66,14 @@ exports.handlers = function (socket) {
         });
     });
 
+    socket.on('removeFile', function (data) {
+        fs.unlink(root + data.url.replace('/remove/', '') ,function (err) {
+            if (err) throw err;
+            socket.emit('clearTimeout', data.timeout);
+            socket.emit('redirect');
+        });
+    })
+
     socket.on('removePage', function(data) {
         exec('rm -rf ' + root + data.path, function() {
             socket.emit('alert', 'Страница удалена');

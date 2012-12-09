@@ -90,3 +90,14 @@ margin: auto;
 .wiki-stuff {
   margin-top: 40px;
 }
+
+.wiki-children-files {
+    border: 1px solid #DDD;
+    padding: 7px 42px;
+    display: inline-block;
+
+}
+.wiki-children-files .dropdown-toggle{
+  margin-top: 20px;
+    min-width: 140px;
+}

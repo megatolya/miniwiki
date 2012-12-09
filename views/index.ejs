@@ -2,13 +2,13 @@
 <div class="body">
     <div class="row-fluid">
         <div class="well">
-            <h1>:-)</h1>
             <h2>Все разделы:</h2>
             <ul>
                 <% pages.forEach(function(page){ %>
                 <li><h3><a href="/wiki/<%= page.path %>"><%= page.name %></a></h3></li>
                 <% }) %>
             </ul>
+        <%- text %>
         </div>
     </div>
 </div>
