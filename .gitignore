@@ -10,7 +10,8 @@ node_modules/
 pids
 logs
 results
+urls.txt
 wiki_files/*
 !wiki_files/miniwiki
+!wiki_files/index.wiki
 npm-debug.log
-urls.txt
