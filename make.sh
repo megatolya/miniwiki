@@ -1,6 +1,7 @@
 #!/bin/bash
 
 npm install
+ git submodule init
 git submodule update
 
 ln -s ../../submodules/mustache/mustache.js ./static/js/mustache.js
