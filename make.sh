@@ -1,6 +1,7 @@
 #!/bin/bash
 
 npm install
+git submodule update
 
 ln -s ../../submodules/mustache/mustache.js ./static/js/mustache.js
 ln -s ../../submodules/purl/purl.js ./static/js/purl.js
@@ -11,9 +12,12 @@ unzip bootstrap.zip
 rm bootstrap.zip
 mv bootstrap static/bootstrap
 mv static/bootstrap/js/bootstrap.min.js static/js/bootstrap.min.js
+rm -rm bootstrap
 
 cd submodules/jquery
+
 npm install
 ./node_modules/grunt/bin/grunt && ./node_modules/grunt/bin/grunt dist:../../static/js/
 cd ../../
 rm static/js/jquery.js
+
