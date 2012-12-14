@@ -15,5 +15,3 @@ wiki_files/*
 !wiki_files/miniwiki
 !wiki_files/index.wiki
 npm-debug.log
-submodules/*
-submodules/
