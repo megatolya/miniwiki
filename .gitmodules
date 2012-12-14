@@ -1,0 +1,9 @@
+[submodule "submodules/mustache"]
+	path = submodules/mustache
+	url = https://github.com/janl/mustache.js.git
+[submodule "submodules/jquery"]
+	path = submodules/jquery
+	url = https://github.com/jquery/jquery.git
+[submodule "submodules/purl"]
+	path = submodules/purl
+	url = https://github.com/allmarkedup/jQuery-URL-Parser.git
