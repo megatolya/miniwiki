@@ -62,6 +62,17 @@ var Wiki = {
         }
     },
     interface : {
+        nightToggle : function () {
+            $('.navbar').toggleClass('navbar-inverse');
+            $('.btn').toggleClass('btn-inverse').find('i').toggleClass('icon-white');
+
+            if (!$('.night.theme').length) {
+                $('body').append('<link class="night theme" href="/static/css/night.theme.css" rel="stylesheet">');
+            } else {
+                $('.night.theme').remove();
+            }
+
+        },
         sayToAllClick : function () {
             var msg = prompt('Текст:');
             if (msg) {
@@ -184,14 +195,21 @@ var Wiki = {
 };
 
 $(function() {
-    $('.btn-wiki-edit').click(           Wiki.interface.editButtonClick);
-    $('.btn-wiki-add-child').click(      Wiki.interface.addChildPageClick);
-    $('.btn-wiki-dont-add-child').click( Wiki.interface.hideNewPager);
-    $('.btn-wiki-remove').click(         Wiki.interface.removeClick);
-    $('.btn-wiki-dont-edit').click(      Wiki.interface.dontEditClick);
-    $('.add-new-section').click(         Wiki.interface.newSectionClick);
-    $('.say-to-all').click(              Wiki.interface.sayToAllClick);
-    $('.wiki-remove-file').click(        Wiki.interface.removeFileClick);
+
+    if (config.nightMode) {
+        setTimeout(function () {
+            $('.night-toggle').click();
+        }, 0);
+    }
+    $('.btn-wiki-edit').click(Wiki.interface.editButtonClick);
+    $('.btn-wiki-add-child').click(Wiki.interface.addChildPageClick);
+    $('.btn-wiki-dont-add-child').click(Wiki.interface.hideNewPager);
+    $('.btn-wiki-remove').click(Wiki.interface.removeClick);
+    $('.btn-wiki-dont-edit').click(Wiki.interface.dontEditClick);
+    $('.add-new-section').click(Wiki.interface.newSectionClick);
+    $('.say-to-all').click(Wiki.interface.sayToAllClick);
+    $('.wiki-remove-file').click(Wiki.interface.removeFileClick);
+    $('.night-toggle').click(Wiki.interface.nightToggle);
 
     socket.on('redirect',     Wiki.interface.redirect);
     socket.on('alert',        Wiki.interface.alertFromServer);

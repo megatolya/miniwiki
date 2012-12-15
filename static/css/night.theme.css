@@ -1,0 +1,11 @@
+.body, body, .well, .breadcrumb {
+    background: #222;
+}
+* {
+    color: #ddd;
+    text-shadow: none;
+}
+
+hr {
+    border: none;
+}
