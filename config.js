@@ -5,9 +5,10 @@ exports.config = {
             password: '123'
         }
     ],
-    wikiRoot: '/home/anatoly/git/miniwiki/wiki_files/',
+    wikiRoot: __dirname + '/wiki_files/',
     encoding: 'utf8',
     wikiFormat: '.wiki',
+    host: '127.0.0.1',
     port: 3000,
     logToConsole: true
-}
+};

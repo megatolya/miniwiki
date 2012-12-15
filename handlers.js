@@ -11,13 +11,11 @@ function checkUser (login, pass) {
     for (var i = config.users.length - 1; i >= 0; i--) {
         if (config.users[i].login == login && config.users[i].password == pass)
             return config.users[i];
-    };
+    }
     return false;
-};
+}
 
 exports.upload = function (req, res) {
-    console.log();
-    console.log(req.files.file);
     fs.readFile(req.files.file.path, function (err, data) {
         var newPath = root + req.body.referer + '/' + req.files.file.name;
         fs.writeFile(newPath, data, function (err) {
@@ -27,9 +25,11 @@ exports.upload = function (req, res) {
 };
 
 exports.log = function (req, res) {
-    console.log(req);
     if (req.session.login) {
-        res.render('log', {login:req.session.login});
+        res.render('log', {
+            login:req.session.login,
+            config: config
+        });
     } else {
         res.redirect('/login');
     }
@@ -40,7 +40,6 @@ exports.log = function (req, res) {
 exports.index = function (req, res) {
     if (req.session.login) {
         //stuff.log('index', req.socket);
-        console.log(req);
         fs.readdir(root, function(err, folders) {
             var pages = [];
             var i = 0;
@@ -51,8 +50,13 @@ exports.index = function (req, res) {
                 });
                 fs.readFile(root + 'index.wiki', encoding, function (err, indexText) {
                     indexText = md(indexText);
-                    res.render('index', {login:req.session.login, pages: pages, text: indexText});
-                })
+                    res.render('index', {
+                        login:req.session.login,
+                        pages: pages,
+                        text: indexText,
+                        config: config
+                    });
+                });
             } else {
                 res.render('404');
             }
@@ -102,7 +106,11 @@ exports.tree = function (req, res) {
                 return;
             }
 
-            res.render('tree', {tree: data, login: req.session.login});
+            res.render('tree', {
+                tree: data,
+                login: req.session.login,
+                config: config
+            });
         });
     } else {
         res.redirect('/login');
@@ -137,7 +145,11 @@ exports.wiki = function (req, res) {
                     stuff.getFilesOfPage(url, function (files) {
                         page.children = children;
                         page.files = files;
-                        res.render('wiki', {page: page, login: req.session.login});
+                        res.render('wiki', {
+                            page: page,
+                            login: req.session.login,
+                            config: config
+                        });
                     });
                 });
             });
