@@ -28,16 +28,16 @@ app
     .use('/static', express.directory('static'))
     .use('/static', express.static('static'))
 
-    .get('/', handlers.index)
-    .get('/log', handlers.log)
+    .get('/', handlers.checkAuth, handlers.index)
+    .get('/log', handlers.checkAuth, handlers.log)
     .get('/logout', handlers.logout)
     .get('/login', handlers.login)
-    .get('/wiki', handlers.index)
-    .get('/tree', handlers.tree)
-    .get('/favicon.ico', handlers.ololo)
-    .get('*', handlers.wiki)
+    .get('/wiki', handlers.checkAuth, handlers.index)
+    .get('/tree', handlers.checkAuth, handlers.tree)
+    .get('/favicon.ico', handlers.favicon)
+    .get('*', handlers.checkAuth, handlers.wiki)
     .post('/', handlers.auth)
-    .post('/upload', handlers.upload);
+    .post('/upload', handlers.checkAuth, handlers.upload);
 
 io.set('log level', 1);
 io.sockets.on('connection', ioHandlers.handlers);

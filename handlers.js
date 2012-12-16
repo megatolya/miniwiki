@@ -25,20 +25,15 @@ exports.upload = function (req, res) {
 };
 
 exports.log = function (req, res) {
-    if (req.session.login) {
         res.render('log', {
             login:req.session.login,
             config: config
         });
-    } else {
-        res.redirect('/login');
-    }
 
 
 };
 
 exports.index = function (req, res) {
-    if (req.session.login) {
         //stuff.log('index', req.socket);
         fs.readdir(root, function(err, folders) {
             var pages = [];
@@ -61,10 +56,6 @@ exports.index = function (req, res) {
                 res.render('404');
             }
         });
-    }
-    else{
-        res.redirect('/login');
-    }
 };
 
 exports.logout = function (req, res) {
@@ -90,16 +81,19 @@ exports.auth = function (req, res){
 
 };
 
-exports.notFound = function (req, res) {
+exports.checkAuth = function (req, res, next) {
     if (req.session.login) {
-        res.render('404');
+        next();
     } else {
         res.redirect('/login');
     }
 };
 
+exports.notFound = function (req, res) {
+    res.render('404');
+};
+
 exports.tree = function (req, res) {
-    if (req.session.login) {
         exec('tree ' + root, function(err, data) {
             if (err){
                 console.log('brew install tree!');
@@ -112,13 +106,9 @@ exports.tree = function (req, res) {
                 config: config
             });
         });
-    } else {
-        res.redirect('/login');
-    }
 };
 
 exports.wiki = function (req, res) {
-    if (req.session.login) {
         var url = req.route.params[0];
         if (!stuff.isFileRequested(url)) {
             if (url) {
@@ -165,11 +155,8 @@ exports.wiki = function (req, res) {
                 res.sendfile(root + url.replace('/wiki/', ''));
             }
         }
-    }
-    else{
-        res.redirect('/login');
-    }
 };
 
-exports.ololo = function () {
+exports.favicon = function () {
+    res.redirect('/static/favicon.ico');
 };
