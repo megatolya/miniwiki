@@ -39,8 +39,9 @@ app
     .post('/', handlers.auth)
     .post('/upload', handlers.checkAuth, handlers.upload);
 
-io.set('log level', 1);
-io.sockets.on('connection', ioHandlers.handlers);
+io
+    .set('log level', 1)
+    .sockets.on('connection', ioHandlers.handlers);
 
 server.listen(config.port);
-console.log('Приложение работает по адресу http://' + config.host + ':' + config.port);
+console.log('Server works at http://' + config.host + ':' + config.port);

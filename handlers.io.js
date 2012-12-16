@@ -7,7 +7,8 @@ var fs = require('fs'),
     count = 0,
     handlers = require('./handlers'),
     stuff = require('./stuff'),
-    exec = require('child_process').exec;
+    exec = require('child_process').exec,
+    i18n = require('./i18n').json[config.lang];
 
 exports.handlers = function (socket) {
     stuff.log('connection', socket);
@@ -76,7 +77,7 @@ exports.handlers = function (socket) {
 
     socket.on('removePage', function(data) {
         exec('rm -rf ' + root + data.path, function() {
-            socket.emit('alert', 'Страница удалена');
+            socket.emit('alert', i18n.pageRemoved);
             socket.emit('clearTimeout', data.timeout);
         });
     });

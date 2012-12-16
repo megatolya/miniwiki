@@ -1,7 +1,7 @@
 exports.config = {
     users: [
         {
-            login: 'megatolya',
+            login: 'admin',
             password: '123'
         }
     ],
@@ -11,5 +11,7 @@ exports.config = {
     host: '127.0.0.1',
     port: 3000,
     logToConsole: true,
-    nightMode: false
+    nightMode: false,
+    useAuth: true,
+    lang: 'ru'
 };

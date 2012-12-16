@@ -11,9 +11,9 @@
     </li>
     <% }); %>
     <div class="btn-group wiki-tools pull-right btn-group-wiki-controls">
-        <a class="btn btn-wiki-add-child" href="#"><i class="icon-plus"></i> Добавить подстраницу</a>
-        <a class="btn btn-wiki-edit" data-act="edit" href="#"><i class="icon-pencil"></i> Редактировать</a>
-        <a class="btn btn-wiki-remove" href="#"><i class="icon-remove"></i> Удалить</a>
+        <a class="btn btn-wiki-add-child" href="#"><i class="icon-plus"></i> <%= i18n.addSubPage %></a>
+        <a class="btn btn-wiki-edit" data-act="edit" href="#"><i class="icon-pencil"></i> <%= i18n.Edit %></a>
+        <a class="btn btn-wiki-remove" href="#"><i class="icon-remove"></i> <%= i18n.Remove %></a>
     </div>
 </ul>
 <div class="container-fluid body">
@@ -24,7 +24,7 @@
             </div>
              <% if (page.children.length > 0) { %>
                 <div class ="wiki-children">
-                    <h5>Вложенные страницы:</h5>
+                    <h5><%= i18n.subPages %></h5>
                     <% page.children.forEach(function(child) { %>
                         <a href="/wiki/<%= page.currentUrl %><%= child %>"><%= child %></a><br>
                     <% }); %>
@@ -32,7 +32,7 @@
             <% } %>
             <% if (page.files.length > 0) { %>
                 <div class ="wiki-children-files">
-                    <h5>Прекрепленные файлы:</h5>
+                    <h5><%= i18n.attachedFiles %></h5>
                     <% page.files.forEach(function(file) { %>
     <div class="btn-group">
         <a class="btn btn-mini dropdown-toggle" data-toggle="dropdown" href="#">
@@ -44,7 +44,7 @@
         <span class="caret"></span>
         </a>
         <ul class="dropdown-menu">
-        <li><a class="wiki-remove-file" href="/remove/<%= page.currentUrl %><%= file.name %>">Удалить</a></li>
+        <li><a class="wiki-remove-file" href="/remove/<%= page.currentUrl %><%= file.name %>"><%= i18n.Remove %></a></li>
         <li><a href="/wiki/<%= page.currentUrl %><%= file.name %>"><%= file.name %></a></li>
         </ul>
     </div>
@@ -55,10 +55,10 @@
     </div>
     <form class="wiki-editor">
     <a class="btn btn-wiki-edit btn-success" data-act="save" href="#">
-        <i class="icon-ok icon-white"></i> Сохранить
+        <i class="icon-ok icon-white"></i> <%= i18n.Save %>
     </a>
     <a class="btn btn-wiki-dont-edit btn-danger" href="#">
-        Не сохранять
+        <%= i18n.dontSave %>
     </a>
     <br>
     <br>
@@ -66,18 +66,18 @@
         <textarea name="text" class="span12"><%= page.clearText %></textarea>
     </form>
     <form class="wiki-new-page">
-        <a class="btn btn-wiki-add-child  btn-primary" href="#">Добавить</a>
-        <a class="btn btn-danger btn-wiki-dont-add-child" href="#">Не добавлять</a>
+        <a class="btn btn-wiki-add-child  btn-primary" href="#"><%= i18n.Add %></a>
+        <a class="btn btn-danger btn-wiki-dont-add-child" href="#"><%= i18n.dontAdd %></a>
         <br><br>
-        <input name="header" class="span12 wiki-header-edit" type="text" placeholder="Заголовок">
-        <textarea name="text" class="span12" placeholder="Какой-то умный текст..."></textarea>
+        <input name="header" class="span12 wiki-header-edit" type="text" placeholder="<%= i18n.Header %>">
+        <textarea name="text" class="span12" placeholder="<%= i18n.someText %>"></textarea>
     </form>
 </div>
 <div class="well wiki-stuff">
     <form action="/upload" method="post" enctype="multipart/form-data">
         <input type="file" name="file">
         <input type="hidden" name="referer" value="<%= page.currentUrl %>">
-        <input type="submit" class="btn btn-mini" value="Прикрепить">
+        <input type="submit" class="btn btn-mini" value="<%= i18n.attacheFiles %>">
     </form>
 </div>
 <% include footer %>

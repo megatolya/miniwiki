@@ -1,11 +1,9 @@
 var config = require('./config').config,
     fs = require('fs'),
-    root = config.wikiRoot,
-    encoding = config.encoding,
-    wikiFormat = config.wikiFormat,
     stuff = require('./stuff'),
     md = require('node-markdown').Markdown,
-    exec = require('child_process').exec;
+    exec = require('child_process').exec,
+    i18n = require('./i18n').json;
 
 function checkUser (login, pass) {
     for (var i = config.users.length - 1; i >= 0; i--) {
@@ -15,9 +13,13 @@ function checkUser (login, pass) {
     return false;
 }
 
+function getLang (req) {
+    return req.session.lang || config.lang;
+}
+
 exports.upload = function (req, res) {
     fs.readFile(req.files.file.path, function (err, data) {
-        var newPath = root + req.body.referer + '/' + req.files.file.name;
+        var newPath = config.wikiRoot + req.body.referer + '/' + req.files.file.name;
         fs.writeFile(newPath, data, function (err) {
             res.redirect('/wiki/' + req.body.referer);
         });
@@ -27,7 +29,8 @@ exports.upload = function (req, res) {
 exports.log = function (req, res) {
         res.render('log', {
             login:req.session.login,
-            config: config
+            config: config,
+            i18n: i18n[getLang(req)]
         });
 
 
@@ -35,7 +38,7 @@ exports.log = function (req, res) {
 
 exports.index = function (req, res) {
         //stuff.log('index', req.socket);
-        fs.readdir(root, function(err, folders) {
+        fs.readdir(config.wikiRoot, function(err, folders) {
             var pages = [];
             var i = 0;
             if (folders) {
@@ -43,17 +46,20 @@ exports.index = function (req, res) {
                     if(folder!='index.wiki')
                         pages[i++] = { path: folder, name: folder};
                 });
-                fs.readFile(root + 'index.wiki', encoding, function (err, indexText) {
+                fs.readFile(config.wikiRoot + 'index.wiki', config.encoding, function (err, indexText) {
                     indexText = md(indexText);
                     res.render('index', {
                         login:req.session.login,
                         pages: pages,
                         text: indexText,
-                        config: config
+                        config: config,
+                        i18n: i18n[getLang(req)]
                     });
                 });
             } else {
-                res.render('404');
+                res.render('404', {
+                    i18n: i18n[getLang(req)]
+                });
             }
         });
 };
@@ -64,7 +70,9 @@ exports.logout = function (req, res) {
 };
 
 exports.login = function (req, res) {
-    res.render('login');
+    res.render('login', {
+        i18n: i18n[getLang(req)]
+    });
 };
 
 exports.auth = function (req, res){
@@ -77,24 +85,28 @@ exports.auth = function (req, res){
         res.redirect('/login');
         return false;
     }
-
-
 };
 
 exports.checkAuth = function (req, res, next) {
-    if (req.session.login) {
-        next();
+    if (config.useAuth) {
+        if (req.session.login) {
+            next();
+        } else {
+            res.redirect('/login');
+        }
     } else {
-        res.redirect('/login');
+        next();
     }
 };
 
 exports.notFound = function (req, res) {
-    res.render('404');
+    res.render('404', {
+        i18n: i18n[getLang(req)]
+    });
 };
 
 exports.tree = function (req, res) {
-        exec('tree ' + root, function(err, data) {
+        exec('tree ' + config.wikiRoot, function(err, data) {
             if (err){
                 console.log('brew install tree!');
                 return;
@@ -103,7 +115,8 @@ exports.tree = function (req, res) {
             res.render('tree', {
                 tree: data,
                 login: req.session.login,
-                config: config
+                config: config,
+                i18n: i18n[getLang(req)]
             });
         });
 };
@@ -115,14 +128,18 @@ exports.wiki = function (req, res) {
                 url = url[url.length-1] == '/' ? url.slice(0, url.length-1) : url;
                 url = url.replace('/wiki/', '');
             } else {
-                res.render('404');
+                res.render('404', {
+                    i18n: i18n[getLang(req)]
+                });
                 return;
             }
             var fileName = stuff.getLastDirOfPath(url);
-            var path = root + url + '/' + fileName + wikiFormat;
-            fs.readFile(path, encoding, function (err, content) {
+            var path = config.wikiRoot + url + '/' + fileName + config.wikiFormat;
+            fs.readFile(path, config.encoding, function (err, content) {
                 if (err) {
-                    res.render('404');
+                    res.render('404', {
+                        i18n: i18n[getLang(req)]
+                    });
                     return;
                 }
                 var page = {};
@@ -138,7 +155,8 @@ exports.wiki = function (req, res) {
                         res.render('wiki', {
                             page: page,
                             login: req.session.login,
-                            config: config
+                            config: config,
+                            i18n: i18n[getLang(req)]
                         });
                     });
                 });
@@ -147,16 +165,16 @@ exports.wiki = function (req, res) {
 
             var reg=/\/remove\/.*/;
             if (reg.test(url)) {
-                fs.unlink(root + url.replace('/remove/', '') ,function (err) {
+                fs.unlink(config.wikiRoot + url.replace('/remove/', '') ,function (err) {
                     if (err) throw err;
                     res.redirect('/wiki');
                 });
             } else {
-                res.sendfile(root + url.replace('/wiki/', ''));
+                res.sendfile(config.wikiRoot + url.replace('/wiki/', ''));
             }
         }
 };
 
-exports.favicon = function () {
-    res.redirect('/static/favicon.ico');
+exports.favicon = function (req, res) {
+    //res.redirect('/static/favicon.ico');
 };

@@ -15,7 +15,7 @@ function loading(id) {
         $('.paranja').show();
         //таймаут ожидания ответа
         id = setTimeout(function () {
-            alert('Ошибка! :-(');
+            alert(i18n.Error);
             $('.paranja').hide();
             //window.location.reload();
         }, 6000);
@@ -81,7 +81,7 @@ var Wiki = {
             return false;
         },
         newSectionClick : function () {
-            var name = prompt('Название нового раздела');
+            var name = prompt(i18n.newClusterName);
             if (name) {
                 socket.emit('newSection', name);
             }
@@ -103,7 +103,7 @@ var Wiki = {
             $('.alerts').prepend(html);
         },
         removeClick : function () {
-            if (confirm('Вы уверены?')){
+            if (confirm(i18n.areYouSure)){
                 Wiki.server.remove(Wiki.wikiPath);
             }
             return false;
@@ -114,7 +114,7 @@ var Wiki = {
                         $(this)
                             .data('act', 'save')
                             .addClass('btn-success')
-                            .html('<i class="icon-ok icon-white"></i> Сохранить');
+                            .html('<i class="icon-ok icon-white"></i>' + i18n.Save);
                 }
                 else {
                     var page = $('.wiki-editor').serializeObject();
@@ -124,7 +124,7 @@ var Wiki = {
                         $(this)
                             .data('act', 'edit')
                             .removeClass('btn-success')
-                            .html('<i class="icon-pencil"></i> Редактировать');
+                            .html('<i class="icon-pencil"></i>' + i18n.Edit);
                 }
                 return false;
         },
@@ -151,7 +151,7 @@ var Wiki = {
                     newWikiPage.path = $.url().data.attr.path.slice(1,$.url().data.attr.path.length);
                     socket.emit('newWikiPage', newWikiPage);
                 } else {
-                    alert('Пустой заголовок');
+                    alert(i18n.emptyHeader);
                 }
             }
             return false;
@@ -211,7 +211,7 @@ $(function() {
     $('.wiki-remove-file').click(Wiki.interface.removeFileClick);
     $('.night-toggle').click(Wiki.interface.nightToggle);
 
-    socket.on('redirect',     Wiki.interface.redirect);
-    socket.on('alert',        Wiki.interface.alertFromServer);
+    socket.on('redirect', Wiki.interface.redirect);
+    socket.on('alert', Wiki.interface.alertFromServer);
     socket.on('clearTimeout', Wiki.interface.clearTimeout);
 });

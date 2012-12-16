@@ -14,15 +14,17 @@
                 <span class="icon-bar"></span>
             </a>
             <a class="brand" href="/">miniwiki</a>
+            <% if (config.useAuth) { %>
             <div class="btn-group pull-right">
                 <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
                     <%= login %>
                     <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu">
-                  <li><a href="/logout">Выйти</a></li>
+                  <li><a href="/logout"><%= i18n.logout %></a></li>
                 </ul>
             </div>
+            <% } %>
             <div class="pull-right night-toggle">
                 <a href="#" class="btn btn-inverse"><i class="icon-eye-open icon-white"></i></a>
             </div>
