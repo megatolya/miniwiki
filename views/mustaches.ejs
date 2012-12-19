@@ -5,4 +5,14 @@
         {{text}}
     </div>
 </script>
+<script type="text/html" class="t-headers">
+    <div class="wiki-headers well">
+        <h3>{{heading}}</h3>
+        <ul>
+            {{#headers}}
+                <li><a href="#{{.}}">{{.}}</a></li>
+            {{/headers}}
+        </ul>
+    </div>
+</script>
 

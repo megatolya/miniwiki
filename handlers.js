@@ -30,11 +30,19 @@ exports.log = function (req, res) {
         res.render('log', {
             login:req.session.login,
             config: config,
-            i18n: i18n[getLang(req)]
+            i18n: i18n[getLang(req)],
+            navbar: 'default'
         });
-
-
 };
+
+exports.terminal = function (req, res) {
+    res.render('terminal', {
+        login:req.session.login,
+        config: config,
+        i18n: i18n[getLang(req)],
+        navbar: 'fixed'
+    });
+}
 
 exports.index = function (req, res) {
         //stuff.log('index', req.socket);
@@ -53,7 +61,8 @@ exports.index = function (req, res) {
                         pages: pages,
                         text: indexText,
                         config: config,
-                        i18n: i18n[getLang(req)]
+                        i18n: i18n[getLang(req)],
+                        navbar: 'default'
                     });
                 });
             } else {
@@ -105,22 +114,6 @@ exports.notFound = function (req, res) {
     });
 };
 
-exports.tree = function (req, res) {
-        exec('tree ' + config.wikiRoot, function(err, data) {
-            if (err){
-                console.log('brew install tree!');
-                return;
-            }
-
-            res.render('tree', {
-                tree: data,
-                login: req.session.login,
-                config: config,
-                i18n: i18n[getLang(req)]
-            });
-        });
-};
-
 exports.wiki = function (req, res) {
         var url = req.route.params[0];
         if (!stuff.isFileRequested(url)) {
@@ -156,6 +149,7 @@ exports.wiki = function (req, res) {
                             page: page,
                             login: req.session.login,
                             config: config,
+                            navbar: 'default',
                             i18n: i18n[getLang(req)]
                         });
                     });

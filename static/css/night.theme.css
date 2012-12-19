@@ -9,3 +9,6 @@
 hr {
     border: none;
 }
+pre, code {
+    background: transparent;
+}

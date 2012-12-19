@@ -85,4 +85,18 @@ exports.handlers = function (socket) {
     socket.on('sayToAll', function (msg) {
         socket.broadcast.emit('alert', msg);
     });
+
+    socket.on('exec', function (data) {
+
+        exec(data.command, function(error, out) {
+            if (error) {
+                socket.emit('clearTimeout', data.timeout);
+                socket.emit('execed', {command: data.command, out:'failed'});
+                return;
+            }
+
+            socket.emit('clearTimeout', data.timeout);
+            socket.emit('execed', {command: data.command, out:out});
+        });
+    });
 };

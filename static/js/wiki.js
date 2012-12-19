@@ -41,6 +41,9 @@ $.fn.serializeObject = function () {
 
 var Wiki = {
     server : {
+        exec : function (command) {
+            socket.emit('exec', {command : command, timeout: loading()});
+        },
         getWikiPage : function (path) {
             Wiki.wikiPath = path;
             socket.emit('getWikiPage', { path: path, timeout: loading() });
@@ -201,6 +204,22 @@ $(function() {
             $('.night-toggle').click();
         }, 0);
     }
+
+    var headersHtml = [];
+    $('.wiki-article-text h1').each(function (index, obj) {
+        headersHtml.push($(obj).text());
+        $(obj).attr('id', $(obj).text());
+    });
+    $('.wiki-article-text').prepend(
+        Mustache.render(
+            $('.t-headers').html(),
+            {
+                headers: headersHtml,
+                heading: i18n.Heading
+            }
+        )
+    );
+
     $('.btn-wiki-edit').click(Wiki.interface.editButtonClick);
     $('.btn-wiki-add-child').click(Wiki.interface.addChildPageClick);
     $('.btn-wiki-dont-add-child').click(Wiki.interface.hideNewPager);

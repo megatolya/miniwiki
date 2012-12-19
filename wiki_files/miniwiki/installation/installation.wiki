@@ -9,3 +9,5 @@
 `vim config.js`
 
 `sudo node server.js`
+
+#Установка

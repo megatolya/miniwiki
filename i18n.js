@@ -8,7 +8,7 @@ exports.json = {
         "newCluster": "Новый кластер",
         "sendToAll" : "Сообщение всем",
         "wikiStructure" : "Структура вики",
-        "logging": "Логгирование",
+        "Terminal": "Терминал",
         "Login" : "Логин",
         "Password" : "Пароль",
         "addSubPage" : "Добавить подстраницу",
@@ -27,7 +27,9 @@ exports.json = {
         "Error" : "Ошибка! :-(",
         "Are you sure" : "Вы уверены?",
         "emptyHeader" : "Пустой заголовок",
-        "pageRemoved" : "Страница удалена"
+        "pageRemoved" : "Страница удалена",
+        "Heading" : "Оглавление",
+        "typeCommand" : "Введите команду в поле ниже и нажмите \"ввод\""
     },
     "en" : {
         "pageNotFound" : "Page not found :-(",
@@ -38,7 +40,7 @@ exports.json = {
         "newCluster": "New cluster",
         "sendToAll" : "Send to all",
         "wikiStructure" : "Wiki structure",
-        "logging": "Logging",
+        "Terminal": "Terminal",
         "Login" : "Login",
         "Password" : "Password",
         "addSubPage" : "Add subpage",
@@ -57,6 +59,8 @@ exports.json = {
         "Error" : "Error! :-(",
         "areYouSure" : "Are you sure?",
         "emptyHeader" : "Empty header",
-        "pageRemoved" : "Page removed"
+        "pageRemoved" : "Page removed",
+        "Heading" : "Heading",
+        "typeCommand" : "type command in input below and then type \"return\""
     }
 }

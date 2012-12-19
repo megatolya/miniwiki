@@ -1,3 +1,7 @@
+select, input[type="file"] {
+    height: inherit;
+    line-height: inherit;
+}
 .sidebar-nav {
     padding: 9px 0;
 }
@@ -109,4 +113,18 @@ margin: auto;
 }
 .navbar .pull-right {
     margin-left: 10px;
+}
+.terminal {
+    position: relative;
+    display: block;
+    height:auto;
+    padding: 10px 10px 50px 10px;
+}
+.terminal-input {
+    width: 60%;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    bottom: 0;
+    left:0;
 }

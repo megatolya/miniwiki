@@ -25,7 +25,6 @@ app
     .use(express.cookieParser('121'))
     .use(express.cookieSession('121'))
     .use(express.bodyParser())
-    .use('/static', express.directory('static'))
     .use('/static', express.static('static'))
 
     .get('/', handlers.checkAuth, handlers.index)
@@ -33,7 +32,7 @@ app
     .get('/logout', handlers.logout)
     .get('/login', handlers.login)
     .get('/wiki', handlers.checkAuth, handlers.index)
-    .get('/tree', handlers.checkAuth, handlers.tree)
+    .get('/terminal', handlers.checkAuth, handlers.terminal)
     .get('/favicon.ico', handlers.favicon)
     .get('*', handlers.checkAuth, handlers.wiki)
     .post('/', handlers.auth)
