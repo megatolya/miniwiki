@@ -28,6 +28,7 @@ exports.upload = function (req, res) {
 
 exports.log = function (req, res) {
         res.render('log', {
+            session: req.session,
             login:req.session.login,
             config: config,
             i18n: i18n[getLang(req)],
@@ -37,6 +38,7 @@ exports.log = function (req, res) {
 
 exports.terminal = function (req, res) {
     res.render('terminal', {
+        session: req.session,
         login:req.session.login,
         config: config,
         i18n: i18n[getLang(req)],
@@ -57,6 +59,7 @@ exports.index = function (req, res) {
                 fs.readFile(config.wikiRoot + 'index.wiki', config.encoding, function (err, indexText) {
                     indexText = md(indexText);
                     res.render('index', {
+                        session: req.session,
                         login:req.session.login,
                         pages: pages,
                         text: indexText,
@@ -89,6 +92,7 @@ exports.auth = function (req, res){
         pass = req.body.pass;
     if (checkUser(login, pass)) {
         req.session = checkUser(login, pass);
+        req.session.nightMode = config.nightMode;
         res.redirect('/');
     } else {
         res.redirect('/login');
@@ -146,6 +150,7 @@ exports.wiki = function (req, res) {
                         page.children = children;
                         page.files = files;
                         res.render('wiki', {
+                            session: req.session,
                             page: page,
                             login: req.session.login,
                             config: config,
@@ -168,6 +173,11 @@ exports.wiki = function (req, res) {
             }
         }
 };
+
+exports.nightMode = function (req, res) {
+    req.session.nightMode = !req.session.nightMode;
+    res.send(req.session.nightMode);
+}
 
 exports.favicon = function (req, res) {
     //res.redirect('/static/favicon.ico');

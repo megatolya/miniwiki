@@ -29,6 +29,7 @@ app
 
     .get('/', handlers.checkAuth, handlers.index)
     .get('/log', handlers.checkAuth, handlers.log)
+    .get('/nightmode', handlers.checkAuth, handlers.nightMode)
     .get('/logout', handlers.logout)
     .get('/login', handlers.login)
     .get('/wiki', handlers.checkAuth, handlers.index)

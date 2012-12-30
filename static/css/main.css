@@ -105,6 +105,9 @@ margin: auto;
     margin-top: 20px;
     min-width: 140px;
 }
+.wiki-children-files .btn-group {
+    display: block;
+}
 .breadcrumb {
     margin: 0;
 }

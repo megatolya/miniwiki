@@ -6,8 +6,10 @@
 <% if (navbar == 'fixed') { %>
 <link href="/static/css/fixed.css" rel="stylesheet">
 <% } %>
-
-<link href="/static/css/main.css" rel="stylesheet">
+    <link href="/static/css/main.css" rel="stylesheet">
+<% if (session.nightMode == true) { %>
+    <link class="night theme" href="/static/css/night.theme.css" rel="stylesheet">
+<% } %>
 <div class="paranja"><div class="loading"><img src="/static/img/ajax.gif" alt=""></div></div>
 <div class="navbar">
     <div class="navbar-inner">

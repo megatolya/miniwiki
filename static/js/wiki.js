@@ -66,13 +66,13 @@ var Wiki = {
     },
     interface : {
         nightToggle : function () {
-            $('.navbar').toggleClass('navbar-inverse');
-            $('.btn').toggleClass('btn-inverse').find('i').toggleClass('icon-white');
 
             if (!$('.night.theme').length) {
+                $.get('/nightmode');
                 $('body').append('<link class="night theme" href="/static/css/night.theme.css" rel="stylesheet">');
             } else {
                 $('.night.theme').remove();
+                $.get('/nightmode');
             }
 
         },
@@ -199,11 +199,7 @@ var Wiki = {
 
 $(function() {
 
-    if (config.nightMode) {
-        setTimeout(function () {
-            $('.night-toggle').click();
-        }, 0);
-    }
+
 
     var headersHtml = [];
     $('.wiki-article-text h1').each(function (index, obj) {
