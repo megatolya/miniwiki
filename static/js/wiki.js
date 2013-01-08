@@ -206,15 +206,17 @@ $(function() {
         headersHtml.push($(obj).text());
         $(obj).attr('id', $(obj).text());
     });
-    $('.wiki-article-text').prepend(
-        Mustache.render(
-            $('.t-headers').html(),
-            {
-                headers: headersHtml,
-                heading: i18n.Heading
-            }
-        )
-    );
+    if (headersHtml.length > 1) {
+        $('.wiki-article-text').prepend(
+            Mustache.render(
+                $('.t-headers').html(),
+                {
+                    headers: headersHtml,
+                    heading: i18n.Heading
+                }
+            )
+        );
+    };
 
     $('.btn-wiki-edit').click(Wiki.interface.editButtonClick);
     $('.btn-wiki-add-child').click(Wiki.interface.addChildPageClick);

@@ -12,6 +12,6 @@ exports.config = {
     port: 3000,
     logToConsole: true,
     nightMode: false,
-    useAuth: true,
+    useAuth: false,
     lang: 'ru'
 };

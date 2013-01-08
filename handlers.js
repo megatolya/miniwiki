@@ -26,6 +26,34 @@ exports.upload = function (req, res) {
     });
 };
 
+exports.checkMobile = function (req, res, next) {
+    var ua = req.headers['user-agent'];
+    global.$ = {};
+
+    if (/mobile/i.test(ua))
+        global.$.Mobile = true;
+
+    if (/like Mac OS X/.test(ua)) {
+        global.$.iOS = /CPU( iPhone)? OS ([0-9\._]+) like Mac OS X/.exec(ua)[2].replace(/_/g, '.');
+        global.$.iPhone = /iPhone/.test(ua);
+        global.$.iPad = /iPad/.test(ua);
+    }
+
+    if (/Android/.test(ua))
+        global.$.Android = /Android ([0-9\.]+)[\);]/.exec(ua)[1];
+
+    if (/webOS\//.test(ua))
+        global.$.webOS = /webOS\/([0-9\.]+)[\);]/.exec(ua)[1];
+
+    if (/(Intel|PPC) Mac OS X/.test(ua))
+        global.$.Mac = /(Intel|PPC) Mac OS X ?([0-9\._]*)[\)\;]/.exec(ua)[2].replace(/_/g, '.') || true;
+
+    if (/Windows NT/.test(ua))
+        global.$.Windows = /Windows NT ([0-9\._]+)[\);]/.exec(ua)[1];
+
+    next();
+};
+
 exports.log = function (req, res) {
         res.render('log', {
             session: req.session,
@@ -48,6 +76,7 @@ exports.terminal = function (req, res) {
 
 exports.index = function (req, res) {
         //stuff.log('index', req.socket);
+
         fs.readdir(config.wikiRoot, function(err, folders) {
             var pages = [];
             var i = 0;
@@ -120,6 +149,7 @@ exports.notFound = function (req, res) {
 
 exports.wiki = function (req, res) {
         var url = req.route.params[0];
+        console.log(url);
         if (!stuff.isFileRequested(url)) {
             if (url) {
                 url = url[url.length-1] == '/' ? url.slice(0, url.length-1) : url;
@@ -149,14 +179,25 @@ exports.wiki = function (req, res) {
                     stuff.getFilesOfPage(url, function (files) {
                         page.children = children;
                         page.files = files;
-                        res.render('wiki', {
-                            session: req.session,
-                            page: page,
-                            login: req.session.login,
-                            config: config,
-                            navbar: 'default',
-                            i18n: i18n[getLang(req)]
-                        });
+                        if (!global.$.iOS) {
+                            res.render('wiki', {
+                                session: req.session,
+                                page: page,
+                                login: req.session.login,
+                                config: config,
+                                navbar: 'default',
+                                i18n: i18n[getLang(req)]
+                            });
+                        } else {
+                            res.render('ios-wiki', {
+                                session: req.session,
+                                page: page,
+                                login: req.session.login,
+                                config: config,
+                                navbar: 'default',
+                                i18n: i18n[getLang(req)]
+                            });
+                        }
                     });
                 });
             });

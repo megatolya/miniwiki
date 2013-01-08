@@ -29,7 +29,8 @@ exports.json = {
         "emptyHeader" : "Пустой заголовок",
         "pageRemoved" : "Страница удалена",
         "Heading" : "Оглавление",
-        "typeCommand" : "Введите команду в поле ниже и нажмите \"ввод\""
+        "typeCommand" : "Введите команду в поле ниже и нажмите \"ввод\"",
+        "History" : "История изменений"
     },
     "en" : {
         "pageNotFound" : "Page not found :-(",
@@ -61,6 +62,7 @@ exports.json = {
         "emptyHeader" : "Empty header",
         "pageRemoved" : "Page removed",
         "Heading" : "Heading",
-        "typeCommand" : "type command in input below and then type \"return\""
+        "typeCommand" : "type command in input below and then type \"return\"",
+        "History" : "History of changes"
     }
 }

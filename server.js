@@ -35,7 +35,7 @@ app
     .get('/wiki', handlers.checkAuth, handlers.index)
     .get('/terminal', handlers.checkAuth, handlers.terminal)
     .get('/favicon.ico', handlers.favicon)
-    .get('*', handlers.checkAuth, handlers.wiki)
+    .get('*', handlers.checkAuth, handlers.checkMobile, handlers.wiki)
     .post('/', handlers.auth)
     .post('/upload', handlers.checkAuth, handlers.upload);
 

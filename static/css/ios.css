@@ -1,0 +1,28 @@
+.wiki-article-text h1,
+.wiki-article-text h2,
+.wiki-article-text h3,
+.wiki-article-text h4,
+.wiki-article-text h5,
+.wiki-article-text p,
+.wiki-article-text ul,
+.wiki-article-text li {
+    margin: 10px;
+}
+.wiki-article-text {
+    font-size: 15px;
+}
+.wiki-article-text h1 {
+    font-size: 20px;
+}
+.wiki-article-text h2 {
+    font-size: 18px;
+}
+.wiki-article-text h3 {
+    font-size: 17px;
+}
+.wiki-article-text h4 {
+    font-size: 16px;
+}
+.wiki-article-text h4 {
+    font-size: 15px;
+}
