@@ -32,7 +32,7 @@ function getChildrenOfPage (path, callback) {
 
         if (files) {
             files.forEach(function(file){
-                if (file != currentDir + wikiFormat && getExtension(file)==''){
+                if (file != currentDir + wikiFormat && getExtension(file)=='' && file != '.wiki'){
                     children.push(file);
                 }
             });

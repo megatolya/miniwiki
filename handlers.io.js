@@ -38,7 +38,11 @@ exports.handlers = function (socket) {
                     fs.writeFile(newFile, page.text, encoding, function (err) {
                         if (err) throw err;
 
-                        socket.emit('redirect', '/wiki/' + stuff.removeLastDirOfPath(page.path) + '/' +page.header);
+                        fs.writeFile(newPath + '/.wiki/' + new Date().valueOf() + config.wikiFormat, page.text, encoding, function () {
+                            if (err) throw err;
+
+                            socket.emit('redirect', '/wiki/' + stuff.removeLastDirOfPath(page.path) + '/' +page.header);
+                        });
                     });
                  });
             });
@@ -47,7 +51,9 @@ exports.handlers = function (socket) {
             fs.writeFile(filePath, page.text, encoding, function (err) {
                 if (err) throw err;
 
-                socket.emit('redirect', '/wiki/' + page.path);
+                 fs.writeFile(root + page.path + '/.wiki/' + new Date().valueOf() + config.wikiFormat, page.text, encoding, function () {
+                    socket.emit('redirect', '/wiki/' + page.path);
+                 });
             });
         }
     });
@@ -62,7 +68,13 @@ exports.handlers = function (socket) {
             fs.writeFile(newPath + '/' + data.header + wikiFormat, data.text, function (err) {
                 if (err) throw err;
 
-                socket.emit('redirect', '/' + oldPath + '/' + data.header );
+                    fs.mkdir( newPath + '/.wiki/', '0777', function(err) {
+                        fs.writeFile(newPath + '/.wiki/' + new Date().valueOf() + config.wikiFormat, data.text, function (err) {
+                            if (err) throw err;
+
+                            socket.emit('redirect', '/' + oldPath + '/' + data.header );
+                        });
+                    });
             });
         });
     });

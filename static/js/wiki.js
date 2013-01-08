@@ -117,7 +117,7 @@ var Wiki = {
                         $(this)
                             .data('act', 'save')
                             .addClass('btn-success')
-                            .html('<i class="icon-ok icon-white"></i>' + i18n.Save);
+                            .html('<i class="icon-ok icon-white"></i>');
                 }
                 else {
                     var page = $('.wiki-editor').serializeObject();
@@ -127,7 +127,7 @@ var Wiki = {
                         $(this)
                             .data('act', 'edit')
                             .removeClass('btn-success')
-                            .html('<i class="icon-pencil"></i>' + i18n.Edit);
+                            .html('<i class="icon-pencil"></i>');
                 }
                 return false;
         },
@@ -137,10 +137,8 @@ var Wiki = {
             return false;
         },
         addChildPageClick : function () {
-            var $edit = $('.btn-wiki-edit');
-            if ($edit.data('act') == 'save') {
-                $edit.click();
-            }
+            //$('.btn-wiki-dont-edit').click();
+            $('.btn-wiki-edit').removeClass('btn-success').data('act', 'edit');
             if (!$(this).hasClass('btn-primary')) {
                 $('.btn-wiki-add-child').addClass('btn-primary');
                 $(this).addClass('btn-primary');
@@ -174,6 +172,7 @@ var Wiki = {
             $('.wiki-new-page').hide();
             $('.wiki-editor').show();
             $('.btn-wiki-add-child').removeClass('btn-primary');
+            $('.btn-wiki-edit').data('act', 'save');
 
         },
         hideMarkDowner : function () {
@@ -181,6 +180,7 @@ var Wiki = {
             $('.wiki-new-page').hide();
             $('.wiki-article').show();
             $('.btn-wiki-add-child').removeClass('btn-primary');
+            $('.btn-wiki-edit').data('act', 'edit');
         },
         showNewPager : function () {
             $('.wiki-article').hide();

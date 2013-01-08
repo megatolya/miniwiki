@@ -11,14 +11,15 @@
     </li>
     <% }); %>
     <div class="btn-group wiki-tools pull-right btn-group-wiki-controls">
-        <a class="btn btn-wiki-add-child" href="#"><i class="icon-plus"></i> <%= i18n.addSubPage %></a>
-        <a class="btn btn-wiki-edit" data-act="edit" href="#"><i class="icon-pencil"></i> <%= i18n.Edit %></a>
-        <a class="btn btn-wiki-remove" href="#"><i class="icon-remove"></i> <%= i18n.Remove %></a>
+        <a class="btn btn-wiki-add-child" href="#" title="<%= i18n.addSubPage %>"><i class="icon-plus"></i></a>
+        <a class="btn btn-wiki-edit" data-act="edit" href="#" title="<%= i18n.Edit %>"><i class="icon-pencil"></i></a>
+        <a class="btn btn-wiki-remove" title="<%= i18n.Remove %>" href="#"><i class="icon-remove"></i></a>
     </div>
 </ul>
 <div class="container-fluid body">
     <div class="row-fluid">
         <div class="span12 wiki-article">
+
             <div class="wiki-article-text">
                 <%- page.text %>
             </div>
