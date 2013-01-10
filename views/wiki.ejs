@@ -4,16 +4,23 @@
         <a href="/">Wiki</a>
         <span class="divider">/</span>
     </li>
-    <% page.breadCrumbs.forEach(function(crumb){ %>
-    <li>
-        <a href="/wiki<%= crumb.url %>"><%= crumb.title %></a>
-        <span class="divider">/</span>
-    </li>
+    <% page.breadCrumbs.forEach(function(crumb, i){ %>
+        <% if (i != page.breadCrumbs.length - 1) { %>
+            <li>
+                <a href="/wiki<%= crumb.url %>"><%= crumb.title %></a>
+                <span class="divider">/</span>
+            </li>
+        <% } else { %>
+            <li class="selected">
+                <%= crumb.title %>
+            </li>
+        <% } %>
     <% }); %>
     <div class="btn-group wiki-tools pull-right btn-group-wiki-controls">
         <a class="btn btn-wiki-add-child" href="#" title="<%= i18n.addSubPage %>"><i class="icon-plus"></i></a>
         <a class="btn btn-wiki-edit" data-act="edit" href="#" title="<%= i18n.Edit %>"><i class="icon-pencil"></i></a>
         <a class="btn btn-wiki-remove" title="<%= i18n.Remove %>" href="#"><i class="icon-remove"></i></a>
+        <a class="btn" title="<%= i18n.History %>" href="?z=history"><i class="icon-book"></i></a>
     </div>
 </ul>
 <div class="container-fluid body">
@@ -64,14 +71,14 @@
     <br>
     <br>
         <input name="header" class="span12 wiki-header-edit" type="text" value="<%= page.header %>">
-        <textarea name="text" class="span12"><%= page.clearText %></textarea>
+        <textarea name="text" class="span12 ignore-tab"><%= page.clearText %></textarea>
     </form>
     <form class="wiki-new-page">
         <a class="btn btn-wiki-add-child  btn-primary" href="#"><%= i18n.Add %></a>
         <a class="btn btn-danger btn-wiki-dont-add-child" href="#"><%= i18n.dontAdd %></a>
         <br><br>
         <input name="header" class="span12 wiki-header-edit" type="text" placeholder="<%= i18n.Header %>">
-        <textarea name="text" class="span12" placeholder="<%= i18n.someText %>"></textarea>
+        <textarea name="text" class="span12 ignore-tab" placeholder="<%= i18n.someText %>"></textarea>
     </form>
 </div>
 <div class="well wiki-stuff">
@@ -79,7 +86,6 @@
         <input type="file" name="file">
         <input type="hidden" name="referer" value="<%= page.currentUrl %>">
         <input type="submit" class="btn btn-mini" value="<%= i18n.attacheFiles %>">
-        <a href="#" class="btn btn-mini"><%= i18n.History %></a>
     </form>
 </div>
 <% include footer %>

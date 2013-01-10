@@ -199,9 +199,22 @@ var Wiki = {
 
 $(function() {
 
-
-
     var headersHtml = [];
+
+    $('.ignore-tab').bind('keydown', function(e) {
+        if(e.keyCode == 9) {
+            e.preventDefault();
+        }
+    });
+
+    $(window).keydown(function(event) {
+        if (event.keyCode == 83  && event.ctrlKey) {
+            event.preventDefault();
+            return false;
+        }
+
+    });
+
     $('.wiki-article-text h1').each(function (index, obj) {
         headersHtml.push($(obj).text());
         $(obj).attr('id', $(obj).text());

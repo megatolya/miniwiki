@@ -1,0 +1,15 @@
+<% include header %>
+<div class="container-fluid body">
+    <div class="row-fluid">
+        <a class="btn" href="?"><%= i18n.toWikiPage %></a>
+        <a class="btn" href="?z=history"><%= i18n.History %></a>
+        <h2><%= i18n.History %></h2>
+        <div class="span12 wiki-article">
+            <div class="wiki-article-text">
+                <%- text %>
+            </div>
+        </div>
+    </div>
+
+</div>
+<% include footer %>

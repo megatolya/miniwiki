@@ -149,7 +149,7 @@ exports.notFound = function (req, res) {
 
 exports.wiki = function (req, res) {
         var url = req.route.params[0];
-        console.log(url);
+
         if (!stuff.isFileRequested(url)) {
             if (url) {
                 url = url[url.length-1] == '/' ? url.slice(0, url.length-1) : url;
@@ -160,47 +160,97 @@ exports.wiki = function (req, res) {
                 });
                 return;
             }
-            var fileName = stuff.getLastDirOfPath(url);
-            var path = config.wikiRoot + url + '/' + fileName + config.wikiFormat;
-            fs.readFile(path, config.encoding, function (err, content) {
-                if (err) {
-                    res.render('404', {
-                        i18n: i18n[getLang(req)]
-                    });
-                    return;
+            if (req.query.z == 'history') {
+                if (!req.query.file) {
+                    var path = config.wikiRoot + url + '/.wiki/';
+                    fs.readdir(path, function (err, files) {
+                        var fileNameArr = [],
+                            filesContent = {};
+
+                        files.forEach(function(filename, index) {
+                            var timestamp = filename.replace('.wiki', ''),
+                                date = new Date(+timestamp),
+                                time = date.getDate() + '.' + (date.getMonth() + 1 > 9 ? date.getMonth() + 1 : '0'+(date.getMonth() + 1)) + '.' + date.getFullYear() +
+                                    ' ' + date.getHours() + ':' + date.getMinutes();
+                            fileNameArr.push(timestamp);
+                            fs.readFile(path + filename, config.encoding, function(err, content) {
+                                filesContent[timestamp] = content;
+                                if (index == files.length - 1) {
+                                    console.log(filesContent);
+                                    console.log(fileNameArr);
+                                    res.render('history', {
+                                        session: req.session,
+                                        fileNameArr: fileNameArr,
+                                        filesContent: filesContent,
+                                        login: req.session.login,
+                                        config: config,
+                                        navbar: 'default',
+                                        time: time,
+                                        i18n: i18n[getLang(req)]
+                                    });
+                                }
+                            });
+                        });
+                    })
+                } else {
+                    console.log(url);
+                    var path = config.wikiRoot + url + '/.wiki/' + req.query.file + '.wiki';
+                    fs.readFile(path, config.encoding, function (err, content) {
+                        res.render('file-history', {
+                            session: req.session,
+                            login: req.session.login,
+                            config: config,
+                            navbar: 'default',
+                            text: md(content),
+                            i18n: i18n[getLang(req)],
+                            filename: url.split('/')[url.split('/').length - 1]
+                        });
+                    })
                 }
-                var page = {};
-                page.text = md(content);
-                page.clearText = content;
-                page.header = fileName;
-                page.breadCrumbs = stuff.getBreadCrumbs(url);
-                page.currentUrl = url + '/';
-                stuff.getChildrenOfPage(url, function (children) {
-                    stuff.getFilesOfPage(url, function (files) {
-                        page.children = children;
-                        page.files = files;
-                        if (!global.$.iOS) {
-                            res.render('wiki', {
-                                session: req.session,
-                                page: page,
-                                login: req.session.login,
-                                config: config,
-                                navbar: 'default',
-                                i18n: i18n[getLang(req)]
-                            });
-                        } else {
-                            res.render('ios-wiki', {
-                                session: req.session,
-                                page: page,
-                                login: req.session.login,
-                                config: config,
-                                navbar: 'default',
-                                i18n: i18n[getLang(req)]
-                            });
-                        }
+
+            } else  {
+                var fileName = stuff.getLastDirOfPath(url);
+                var path = config.wikiRoot + url + '/' + fileName + config.wikiFormat;
+                fs.readFile(path, config.encoding, function (err, content) {
+                    if (err) {
+                        res.render('404', {
+                            i18n: i18n[getLang(req)]
+                        });
+                        return;
+                    }
+                    var page = {};
+                    page.text = md(content);
+                    page.clearText = content;
+                    page.header = fileName;
+                    page.breadCrumbs = stuff.getBreadCrumbs(url);
+                    page.currentUrl = url + '/';
+                    stuff.getChildrenOfPage(url, function (children) {
+                        stuff.getFilesOfPage(url, function (files) {
+                            page.children = children;
+                            page.files = files;
+                            if (!global.$.iOS) {
+                                res.render('wiki', {
+                                    session: req.session,
+                                    page: page,
+                                    login: req.session.login,
+                                    config: config,
+                                    navbar: 'default',
+                                    i18n: i18n[getLang(req)]
+                                });
+                            } else {
+                                res.render('ios-wiki', {
+                                    session: req.session,
+                                    page: page,
+                                    login: req.session.login,
+                                    config: config,
+                                    navbar: 'default',
+                                    i18n: i18n[getLang(req)]
+                                });
+                            }
+                        });
                     });
-                });
-            });
+                })
+            }
         } else {
 
             var reg=/\/remove\/.*/;

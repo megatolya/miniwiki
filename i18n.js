@@ -30,7 +30,8 @@ exports.json = {
         "pageRemoved" : "Страница удалена",
         "Heading" : "Оглавление",
         "typeCommand" : "Введите команду в поле ниже и нажмите \"ввод\"",
-        "History" : "История изменений"
+        "History" : "История изменений",
+        "toWikiPage" :"К статье",
     },
     "en" : {
         "pageNotFound" : "Page not found :-(",
@@ -63,6 +64,7 @@ exports.json = {
         "pageRemoved" : "Page removed",
         "Heading" : "Heading",
         "typeCommand" : "type command in input below and then type \"return\"",
-        "History" : "History of changes"
+        "History" : "History of changes",
+        "toWikiPage" :"Wiki page",
     }
 }

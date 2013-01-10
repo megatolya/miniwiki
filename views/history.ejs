@@ -1,0 +1,14 @@
+<% include header %>
+
+<div class="container-fluid body">
+    <a class="btn" href="?"><%= i18n.toWikiPage %></a>
+    <h2><%= i18n.History %></h2>
+    <table class="table">
+    <% fileNameArr.forEach(function(filename){ %>
+        <tr><td>
+            <a href="?z=history&file=<%= filename %>" class="pseudo" ><%= time %></a>
+        </td></tr>
+    <% }); %>
+    </table>
+</div>
+<% include footer %>
