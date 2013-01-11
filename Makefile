@@ -4,9 +4,7 @@ all: build
 NODE_MODULES = ./node_modules
 $(NODE_MODULES)::
 	$(info ===> Устанавливаем npm-пакеты)
-	@npm prune
-	@npm cache clean
-	@npm update
+	@npm install
 
 gitsubmodules:
 	$(info ===> init git submodules)
@@ -52,4 +50,4 @@ clean:
 	-rm -rf $(NODE_MODULES)
 	$(info Removing fronted third part libs)
 	-rm $(FRONTEND_LIBS)
-	-rm -rf static/boostrap
+	-rm -r static/bootstrap
