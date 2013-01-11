@@ -1,10 +1,5 @@
 var fs = require('fs'),
     config = require('./config').config,
-    root = config.wikiRoot,
-    encoding = config.encoding,
-    wikiFormat = config.wikiFormat,
-    port = config.port,
-    count = 0,
     handlers = require('./handlers'),
     stuff = require('./stuff'),
     exec = require('child_process').exec,
@@ -13,9 +8,9 @@ var fs = require('fs'),
 exports.handlers = function (socket) {
     stuff.log('connection', socket);
     socket.on('newSection', function (name) {
-        fs.mkdir(root + name, '0777', function (err) {
+        fs.mkdir(config.wikiRoot + name, '0777', function (err) {
             if (err) throw err;
-            fs.writeFile(root + name + '/' + name + wikiFormat, '###:-)', function (err) {
+            fs.writeFile(config.wikiRoot + name + '/' + name + config.wikiFormat, '###:-)', function (err) {
                 if (err) throw err;
                 socket.emit('redirect', '/wiki/' + name);
             });
@@ -25,20 +20,20 @@ exports.handlers = function (socket) {
     socket.on('saveWikiPage', function (page) {
         stuff.log(page, socket);
         if (page.header != stuff.getLastDirOfPath(page.path)) {
-            var oldPath = root + page.path,
-                    newPath = root + stuff.removeLastDirOfPath(page.path) + '/' + page.header;
+            var oldPath = config.wikiRoot + page.path,
+                    newPath = config.wikiRoot + stuff.removeLastDirOfPath(page.path) + '/' + page.header;
             fs.rename(oldPath, newPath, function (err) {
                 if (err) throw err;
 
-                var oldFile = newPath + '/' + stuff.getLastDirOfPath(page.path) + wikiFormat,
-                        newFile = newPath + '/' + page.header + wikiFormat;
+                var oldFile = newPath + '/' + stuff.getLastDirOfPath(page.path) + config.wikiFormat,
+                        newFile = newPath + '/' + page.header + config.wikiFormat;
                  fs.rename(oldFile, newFile, function (err) {
                     if (err) throw err;
 
-                    fs.writeFile(newFile, page.text, encoding, function (err) {
+                    fs.writeFile(newFile, page.text, config.encoding, function (err) {
                         if (err) throw err;
 
-                        fs.writeFile(newPath + '/.wiki/' + new Date().valueOf() + config.wikiFormat, page.text, encoding, function () {
+                        fs.writeFile(newPath + '/.wiki/' + new Date().valueOf() + config.wikiFormat, page.text, config.encoding, function () {
                             if (err) throw err;
 
                             socket.emit('redirect', '/wiki/' + stuff.removeLastDirOfPath(page.path) + '/' +page.header);
@@ -47,11 +42,11 @@ exports.handlers = function (socket) {
                  });
             });
         } else {
-            var filePath = root + page.path + '/' + page.header + wikiFormat;
-            fs.writeFile(filePath, page.text, encoding, function (err) {
+            var filePath = config.wikiRoot + page.path + '/' + page.header + config.wikiFormat;
+            fs.writeFile(filePath, page.text, config.encoding, function (err) {
                 if (err) throw err;
 
-                 fs.writeFile(root + page.path + '/.wiki/' + new Date().valueOf() + config.wikiFormat, page.text, encoding, function () {
+                 fs.writeFile(config.wikiRoot + page.path + '/.wiki/' + new Date().valueOf() + config.wikiFormat, page.text, config.encoding, function () {
                     socket.emit('redirect', '/wiki/' + page.path);
                  });
             });
@@ -61,11 +56,11 @@ exports.handlers = function (socket) {
     socket.on('newWikiPage', function (data) {
         var oldPath = data.path;
         data.path = data.path.replace('wiki/', '');
-        var newPath = root + data.path + '/' + data.header;
+        var newPath = config.wikiRoot + data.path + '/' + data.header;
         fs.mkdir( newPath, '0777', function(err) {
             if (err) throw err;
 
-            fs.writeFile(newPath + '/' + data.header + wikiFormat, data.text, function (err) {
+            fs.writeFile(newPath + '/' + data.header + config.wikiFormat, data.text, function (err) {
                 if (err) throw err;
 
                     fs.mkdir( newPath + '/.wiki/', '0777', function(err) {
@@ -80,7 +75,7 @@ exports.handlers = function (socket) {
     });
 
     socket.on('removeFile', function (data) {
-        fs.unlink(root + data.url.replace('/remove/', '') ,function (err) {
+        fs.unlink(config.wikiRoot + data.url.replace('/remove/', '') ,function (err) {
             if (err) throw err;
             socket.emit('clearTimeout', data.timeout);
             socket.emit('redirect');
@@ -88,7 +83,7 @@ exports.handlers = function (socket) {
     })
 
     socket.on('removePage', function(data) {
-        exec('rm -rf ' + root + data.path, function() {
+        exec('rm -rf ' + config.wikiRoot + data.path, function() {
             socket.emit('alert', i18n.pageRemoved);
             socket.emit('clearTimeout', data.timeout);
         });

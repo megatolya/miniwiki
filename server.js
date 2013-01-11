@@ -9,6 +9,7 @@ var express = require('express'),
     handlers = require('./handlers'),
     ioHandlers = require('./handlers.io.js');
 
+global.config = config;
 app
     .enable('trust proxy')
     .engine('ejs', engine)

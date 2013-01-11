@@ -1,5 +1,4 @@
-var config = require('./config').config,
-    fs = require('fs'),
+var fs = require('fs'),
     stuff = require('./stuff'),
     md = require('node-markdown').Markdown,
     exec = require('child_process').exec,
@@ -28,7 +27,7 @@ exports.upload = function (req, res) {
 
 exports.checkMobile = function (req, res, next) {
     var ua = req.headers['user-agent'];
-    global.$ = {};
+    global.$ = global.$ ? global.$ : {};
 
     if (/mobile/i.test(ua))
         global.$.Mobile = true;
@@ -76,7 +75,6 @@ exports.terminal = function (req, res) {
 
 exports.index = function (req, res) {
         //stuff.log('index', req.socket);
-
         fs.readdir(config.wikiRoot, function(err, folders) {
             var pages = [];
             var i = 0;

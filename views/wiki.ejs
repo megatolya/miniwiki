@@ -26,7 +26,6 @@
 <div class="container-fluid body">
     <div class="row-fluid">
         <div class="span12 wiki-article">
-
             <div class="wiki-article-text">
                 <%- page.text %>
             </div>
@@ -42,20 +41,20 @@
                 <div class ="wiki-children-files">
                     <h5><%= i18n.attachedFiles %></h5>
                     <% page.files.forEach(function(file) { %>
-    <div class="btn-group">
-        <a class="btn btn-mini dropdown-toggle" data-toggle="dropdown" href="#">
-            <% if (file.type=='file') { %>
-            <%= file.name %>
-            <% } else { %>
-            <img width="60" src="/wiki/<%= page.currentUrl %><%= file.name %>" />
-            <% } %>
-        <span class="caret"></span>
-        </a>
-        <ul class="dropdown-menu">
-        <li><a class="wiki-remove-file" href="/remove/<%= page.currentUrl %><%= file.name %>"><%= i18n.Remove %></a></li>
-        <li><a href="/wiki/<%= page.currentUrl %><%= file.name %>"><%= file.name %></a></li>
-        </ul>
-    </div>
+                        <div class="btn-group">
+                            <a class="btn btn-mini dropdown-toggle" data-toggle="dropdown" href="#">
+                            <% if (file.type=='file') { %>
+                                <%= file.name %>
+                            <% } else { %>
+                                <img width="60" src="/wiki/<%= page.currentUrl %><%= file.name %>" />
+                            <% } %>
+                            <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                            <li><a class="wiki-remove-file" href="/remove/<%= page.currentUrl %><%= file.name %>"><%= i18n.Remove %></a></li>
+                            <li><a href="/wiki/<%= page.currentUrl %><%= file.name %>"><%= file.name %></a></li>
+                            </ul>
+                        </div>
                     <% }); %>
                 </div>
             <% } %>

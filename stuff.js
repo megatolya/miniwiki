@@ -1,9 +1,4 @@
 var fs = require('fs'),
-    config = require('./config').config,
-    root = config.wikiRoot,
-    encoding = config.encoding,
-    wikiFormat = config.wikiFormat,
-    logToConsole = config.logToConsole,
     sys = require('sys');
 
 function getLastDirOfPath (path) {
@@ -27,12 +22,12 @@ function getChildrenOfPage (path, callback) {
     var children = [],
             currentDir = getLastDirOfPath(path);
 
-    fs.readdir(root+path, function (err, files) {
+    fs.readdir(config.wikiRoot + path, function (err, files) {
         if (err) throw err;
 
         if (files) {
             files.forEach(function(file){
-                if (file != currentDir + wikiFormat && getExtension(file)=='' && file != '.wiki'){
+                if (file != currentDir + config.wikiFormat && getExtension(file)=='' && file != '.wiki'){
                     children.push(file);
                 }
             });
@@ -47,12 +42,12 @@ function getFilesOfPage (path, callback) {
     var children = [],
             currentDir = getLastDirOfPath(path);
 
-    fs.readdir(root+path, function (err, files) {
+    fs.readdir(config.wikiRoot + path, function (err, files) {
         if (err) throw err;
 
         if (files) {
             files.forEach(function(file){
-                if (file != currentDir + wikiFormat && getExtension(file)){
+                if (file != currentDir + config.wikiFormat && getExtension(file)){
                     if (getExtension(file) == 'img') {
                         children.push({name: file, type:'img'});
                     } else {
@@ -103,7 +98,7 @@ function isFileRequested (path) {
     }
 };
 function log (msg, socket) {
-    if (logToConsole) {
+    if (config.logToConsole) {
         sys.puts(msg);
     }
     if (socket) {
