@@ -11,7 +11,7 @@
 
 git clone git://github.com/megatolya/miniwiki.git
 cd miniwiki
-sh make.sh
+make
 ```
 
 Второй этап - кастомизация:
