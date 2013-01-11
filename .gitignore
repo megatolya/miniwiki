@@ -16,9 +16,6 @@ wiki_files/*
 !wiki_files/index.wiki
 npm-debug.log
 
-static/js/bootstrap.min.js
-static/js/jquery.min.js
-static/js/mustache.js
-static/js/purl.js
 static/js/socket.io.js
-static/bootstrap
+static/components/*
+
