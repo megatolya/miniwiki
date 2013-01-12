@@ -16,6 +16,12 @@ function getLang (req) {
     return req.session.lang || config.lang;
 }
 
+function notFound (req, res) {
+    res.render('404.jade', {
+        i18n: i18n[getLang(req)]
+    });
+}
+
 exports.upload = function (req, res) {
     fs.readFile(req.files.file.path, function (err, data) {
         var newPath = config.wikiRoot + req.body.referer + '/' + req.files.file.name;
@@ -96,9 +102,7 @@ exports.index = function (req, res) {
                     });
                 });
             } else {
-                res.render('404', {
-                    i18n: i18n[getLang(req)]
-                });
+                notFound(req, res); return;
             }
         });
 };
@@ -139,11 +143,7 @@ exports.checkAuth = function (req, res, next) {
     }
 };
 
-exports.notFound = function (req, res) {
-    res.render('404', {
-        i18n: i18n[getLang(req)]
-    });
-};
+
 
 exports.wiki = function (req, res) {
         var url = req.route.params[0];
@@ -153,10 +153,7 @@ exports.wiki = function (req, res) {
                 url = url[url.length-1] == '/' ? url.slice(0, url.length-1) : url;
                 url = url.replace('/wiki/', '');
             } else {
-                res.render('404', {
-                    i18n: i18n[getLang(req)]
-                });
-                return;
+                notFound(req, res); return;
             }
             if (req.query.z == 'history') {
                 if (!req.query.file) {
@@ -211,10 +208,7 @@ exports.wiki = function (req, res) {
                 var path = config.wikiRoot + url + '/' + fileName + config.wikiFormat;
                 fs.readFile(path, config.encoding, function (err, content) {
                     if (err) {
-                        res.render('404', {
-                            i18n: i18n[getLang(req)]
-                        });
-                        return;
+                        notFound(req, res); return;
                     }
                     var page = {};
                     page.text = md(content);
