@@ -113,21 +113,21 @@ var Wiki = {
         },
         editButtonClick : function () {
             if($(this).data('act')=='edit') {
-                        Wiki.interface.showMarkDowner();
-                        $(this)
-                            .data('act', 'save')
-                            .addClass('btn-success')
-                            .html('<i class="icon-ok icon-white"></i>');
+                    Wiki.interface.showMarkDowner();
+                    $(this)
+                        .data('act', 'save')
+                        .addClass('btn-success')
+                        .html('<i class="icon-ok icon-white"></i>');
                 }
                 else {
                     var page = $('.wiki-editor').serializeObject();
                     page.path = Wiki.wikiPath;
                     Wiki.server.saveWikiPage(page);
                     Wiki.interface.hideMarkDowner();
-                        $(this)
-                            .data('act', 'edit')
-                            .removeClass('btn-success')
-                            .html('<i class="icon-pencil"></i>');
+                    $(this)
+                        .data('act', 'edit')
+                        .removeClass('btn-success')
+                        .html('<i class="icon-pencil"></i>');
                 }
                 return false;
         },

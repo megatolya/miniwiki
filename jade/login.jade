@@ -1,0 +1,12 @@
+doctype
+link(href='/static/components/bootstrap/css/bootstrap.css', rel='stylesheet')
+link(href='/static/css/main.css', rel='stylesheet')
+.span3.login-form
+    h2='miniwiki'
+    form(action='/', method='POST')
+        label=i18n.Login
+        input.span3(type='text', value='', name='login')
+        label= i18n.Password
+        input.span3(type='password', value='', name='pass')
+        input.btn.btn-success(type='submit', value='Войти')
+        .clearfix

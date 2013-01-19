@@ -18,6 +18,7 @@ function getLang (req) {
 
 function notFound (req, res) {
     res.render('404.jade', {
+        referer: req.headers['referer'],
         i18n: i18n[getLang(req)]
     });
 }
@@ -77,7 +78,7 @@ exports.terminal = function (req, res) {
         i18n: i18n[getLang(req)],
         navbar: 'fixed'
     });
-}
+};
 
 exports.index = function (req, res) {
         //stuff.log('index', req.socket);
@@ -162,6 +163,11 @@ exports.wiki = function (req, res) {
                         var fileNameArr = [],
                             filesContent = {};
 
+                        //no history
+                        if(!files) {
+                            notFound(req, res);
+                            return;
+                        }
                         files.forEach(function(filename, index) {
                             var timestamp = filename.replace('.wiki', ''),
                                 date = new Date(+timestamp),
@@ -188,7 +194,6 @@ exports.wiki = function (req, res) {
                         });
                     })
                 } else {
-                    console.log(url);
                     var path = config.wikiRoot + url + '/.wiki/' + req.query.file + '.wiki';
                     fs.readFile(path, config.encoding, function (err, content) {
                         res.render('file-history', {

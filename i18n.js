@@ -32,6 +32,7 @@ exports.json = {
         "typeCommand" : "Введите команду в поле ниже и нажмите \"ввод\"",
         "History" : "История изменений",
         "toWikiPage" :"К статье",
+        "back": "Назад"
     },
     "en" : {
         "pageNotFound" : "Page not found :-(",
@@ -66,5 +67,6 @@ exports.json = {
         "typeCommand" : "type command in input below and then type \"return\"",
         "History" : "History of changes",
         "toWikiPage" :"Wiki page",
+        "back": "Back"
     }
 }

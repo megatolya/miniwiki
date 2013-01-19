@@ -1,0 +1,9 @@
+link(href='/static/components/bootstrap/css/bootstrap.css', rel='stylesheet')
+.well
+    h1='404'
+    p=i18n.pageNotFound
+    a(href="/")=i18n.goToMain
+    br
+    br
+    - if(referer)
+        a(href=referer)=i18n.back

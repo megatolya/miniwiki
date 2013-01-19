@@ -6,8 +6,7 @@
     "author": "Anatoliy Ostrovskiy",
     "dependencies": {
       "express": "3.x",
-      "ejs": "x",
-      "ejs-locals": "x",
+      "jade":"0.28.1",
       "socket.io" : "0.9.x",
       "node-markdown" : "0.1.x",
       "bower" : "0.6.x",

@@ -1,0 +1,32 @@
+doctype
+meta(charset='utf-8')
+title='miniwiki'
+meta(name='viewport', content='width=device-width, initial-scale=1.0')
+link(href='/static/components/bootstrap/css/bootstrap.css', rel='stylesheet')
+- if (navbar == 'fixed')
+    link( href='/static/css/fixed.css', rel='stylesheet')
+link(href='/static/css/main.css', rel='stylesheet')
+- if (session.nightMode == true)
+    link.night.theme(href='/static/css/night.theme.css', rel='stylesheet')
+.paranja
+    .loading
+        img(src='/static/img/ajax.gif', alt=i18n.loading)
+.navbar
+    .navbar-inner
+        .container-fluid
+            a.btn.btn-navbar(data-toggle='collapse', data-target='.nav-collapse')
+                span.icon-bar
+                span.icon-bar
+                span.icon-bar
+            a.brand(href='/')='miniwiki'
+            - if (config.useAuth)
+                div.btn-group.pull-right
+                    btn.btn.dropdown-toggle(data-toggle='dropdown', href='#')
+                        !{login}&nbsp;
+                        span.caret
+                    ul.dropdown-menu
+                        li
+                            a(href='/logout')= i18n.logout
+            div.pull-right.night-toggle
+                button.btn.btn-inverse
+                    i.icon-eye-open.icon-white

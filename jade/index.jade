@@ -1,0 +1,17 @@
+include header
+.body
+    .row-fluid
+        .well
+            h2= i18n.allClusters
+            ul
+                - pages.forEach(function(page){
+                    li
+                        h3
+                            a(href='/wiki/'+page.path)= page.name
+                - })
+        !{text}
+    .well.index-stuff
+        button.add-new-section.btn.btn-mini= i18n.newCluster
+        button.say-to-all.btn.btn-mini= i18n.sendToAll
+        a.btn.btn-mini(href='/terminal')= i18n.Terminal
+include footer

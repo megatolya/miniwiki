@@ -1,0 +1,11 @@
+include header
+div.container-fluid.body
+    a.btn(href='?')=i18n.toWikiPage
+    h2=i18n.History
+    table.table
+        - fileNameArr.forEach(function(filename) {
+            tr
+                td
+                    a.pseudo(href='?z=history&file='+filename)= time
+        - });
+include footer

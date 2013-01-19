@@ -1,0 +1,41 @@
+doctype
+html
+    head
+        meta(charset='utf-8')
+        title='Miniwiki'
+        meta(name='viewport', content='initial-scale=1, maximum-scale=1, user-scalable=no')
+        meta(name='apple-mobile-web-app-capable', content='yes')
+        meta(name='apple-mobile-web-app-status-bar-style', content='black')
+        link(rel='apple-touch-icon-precomposed', sizes='72x72', href='touch-icons/apple-touch-icon-72x72.png')
+        link(rel='apple-touch-icon-precomposed', sizes='57x57', href='touch-icons/apple-touch-icon-57x57.png')
+        link(rel='stylesheet', href='/static/css/ratchet.css')
+        link(rel='stylesheet', href='/static/css/ios.css')
+        script(src='/static/js/jquery.min.js')
+        script(src='/static/js/ratchet.js')
+        script(type='text/javascript')
+                | $(function () {
+                |$('a').click(function () {
+                |    document.location.href = $(this).attr('href');
+                |})
+                | })
+
+    body
+        header.bar-title
+            - if (page.breadCrumbs.length > 1 )
+                a.button-prev(href='/wiki' + page.breadCrumbs[page.breadCrumbs.length-2].url ) = 'Вверх'
+            - else
+                a.button-prev(href='/wiki')='На главную'
+        h5.title= page.header
+        .content
+            .content-padded
+                    .wiki-article-text
+                            !{page.text}
+                    - if (page.children.length  >  0) {
+                        .wiki-children
+                                h1= i18n.subPages
+                                ul.list
+                                - page.children.forEach(function(child) {
+                                    li
+                                        a(href='/wiki/'+page.currentUrl+child)=child
+                                            span.chevron
+                                - });

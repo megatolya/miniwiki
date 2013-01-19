@@ -1,0 +1,12 @@
+script(src='/static/js/socket.io.js')
+script
+    var socket = io.connect('http://#{config.host}:#{config.port}');
+script
+    var i18n = !{JSON.stringify(i18n)}
+script
+    var config = !{JSON.stringify(config)}
+script(src='/static/components/jquery/jquery.js')
+script(src='/static/components/bootstrap/js/bootstrap.min.js')
+script(src='/static/components/mustache/mustache.js')
+script(src='/static/components/jQuery-URL-Parser/purl.js')
+script(src='/static/js/wiki.js')

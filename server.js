@@ -1,8 +1,6 @@
 var express = require('express'),
     app = express(),
     server = require('http').createServer(app),
-    engine = require('ejs-locals'),
-    ejs = require('ejs'),
     fs = require('fs'),
     config = require('./config').config;
     io = require('socket.io').listen(server),
@@ -12,9 +10,8 @@ var express = require('express'),
 global.config = config;
 app
     .enable('trust proxy')
-    .engine('ejs', engine)
-    .set('views',__dirname + '/views')
-    .set('view engine', 'ejs')
+    .set('views',__dirname + '/jade')
+    .set('view engine', 'jade')
     .use(express.errorHandler({
         dumpExceptions: true,
         showStack: true
@@ -39,6 +36,7 @@ app
     .get('*', handlers.checkAuth, handlers.checkMobile, handlers.wiki)
     .post('/', handlers.auth)
     .post('/upload', handlers.checkAuth, handlers.upload);
+
 
 io
     .set('log level', 1)

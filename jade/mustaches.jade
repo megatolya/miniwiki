@@ -1,0 +1,14 @@
+script.t-alert(type='text/html')
+    .alert.alert-block(id='\{{id}}')
+        button.close(type='button', data-dismiss='alert')='×'
+        h4='\{{head}}'
+        | \{{text}}
+script.t-headers(type='text/html')
+    div.wiki-headers.well
+        h3='{{heading}}'
+        ul
+            | \{{#headers}}
+                li
+                    a(href='\#{{.}}')='{{.}}'
+            | \{{/headers}}
+

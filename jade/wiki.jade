@@ -1,0 +1,74 @@
+include header
+ul.breadcrumb
+    li
+        a(href='/')='Wiki'
+        span.divider='/'
+    - page.breadCrumbs.forEach(function(crumb, i) {
+        - if (i != page.breadCrumbs.length - 1)
+            li
+                a(href='/wiki'+crumb.url)= crumb.title
+                span.divider='/'
+        - else
+            li.selected=crumb.title
+    - });
+    .btn-group.wiki-tools.pull-right.btn-group-wiki-controls
+        a.btn.btn-wiki-add-child(href='#', title=i18n.addSubPage)
+            i.icon-plus
+        a.btn.btn-wiki-edit(data-act='edit', href='#', title=i18n.Edit)
+            i.icon-pencil
+        a.btn.btn-wiki-remove(title=i18n.Remove, href='#')
+            i(class='icon-remove')
+        a.btn(title=i18n.History, href='?z=history')
+            i.icon-book
+.container-fluid.body
+    .row-fluid
+        .span12.wiki-article
+            .wiki-article-text
+                - if (page.children.length > 0)
+                    div.wiki-children
+                        h5= i18n.subPages
+                        - page.children.forEach(function(child) {
+                            a(href='/wiki/'+page.currentUrl+child)= child
+                            br
+                        - });
+                !{page.text}
+            - if (page.files.length > 0)
+                div.wiki-children-files
+                    h5= i18n.attachedFiles
+                    - page.files.forEach(function(file) {
+                        .btn-group
+                            a.btn.btn-mini.dropdown-toggle(data-toggle='dropdown', href='#')
+                                - if (file.type=='file')
+                                     !{file.name}
+                                - else
+                                    img(width='60', src='/wiki/'+page.currentUrl+file.name)
+                                span.caret
+                            ul.dropdown-menu
+                                li
+                                    a.wiki-remove-file(href='/remove/'+page.currentUrl+file.name)= i18n.Remove
+                                li
+                                    a(href='/wiki/'+page.currentUrl+file.name)= file.name
+                    - });
+    form.wiki-editor
+        .btn-group
+            a.btn.btn-wiki-edit.btn-success(data-act='save', href='#')
+                i.icon-ok.icon-white
+                !{i18n.Save}
+            a.btn.btn-wiki-dont-edit.btn-danger(href='#')=i18n.dontSave
+        br
+        br
+        input.span12.wiki-header-edit(name='header', type='text', value=page.header)
+        textarea.span12.ignore-tab(name='text')= page.clearText
+    form.wiki-new-page
+        a.btn.btn-wiki-add-child.btn-primary(href='#')= i18n.Add
+        a.btn.btn-danger.btn-wiki-dont-add-child(href='#')= i18n.dontAdd
+        br
+        br
+        input.span12.wiki-header-edit(name='header', type='text', placeholder=i18n.Header)
+        textarea.span12.ignore-tab(name='text', placeholder=i18n.someText)
+div.well.wiki-stuff
+    form(action='/upload', method='post', enctype='multipart/form-data')
+        input(type='file', name='file')
+        input(type='hidden', name='referer', value=page.currentUrl)
+        input(type='submit', class='btn btn-mini', value=i18n.attacheFiles)
+include footer
