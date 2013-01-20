@@ -5,6 +5,7 @@
     "private": false,
     "author": "Anatoliy Ostrovskiy",
     "dependencies": {
+      "jquery": "1.8.x",
       "express": "3.x",
       "jade":"0.28.1",
       "socket.io" : "0.9.x",

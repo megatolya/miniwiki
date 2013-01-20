@@ -5,7 +5,7 @@ PURL = ./static/purl.js
 NODE_MODULES = ./node_modules
 BOWER_MODULES = ./static/components
 
-build: 
+build:
 	@npm install
 	@ln -s ../../node_modules/socket.io/node_modules/socket.io-client/dist/socket.io.min.js ./static/js/socket.io.js
 	@mkdir $(BOWER_MODULES)
@@ -22,3 +22,8 @@ clean:
 	-rm -rf $(NODE_MODULES)
 	-rm -rf $(BOWER_MODULES)
 	rm ./static/js/socket.io.js
+	rm ./i18n.js
+start:
+	node i18n-maker.js > i18n.js
+	node server.js
+

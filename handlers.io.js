@@ -3,7 +3,7 @@ var fs = require('fs'),
     handlers = require('./handlers'),
     stuff = require('./stuff'),
     exec = require('child_process').exec,
-    i18n = require('./i18n').json[config.lang];
+    i18n = require('./i18n')[config.lang];
 
 exports.handlers = function (socket) {
     stuff.log('connection', socket);

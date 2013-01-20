@@ -2,7 +2,7 @@ var fs = require('fs'),
     stuff = require('./stuff'),
     md = require('node-markdown').Markdown,
     exec = require('child_process').exec,
-    i18n = require('./i18n').json;
+    i18n = require('./i18n');
 
 function checkUser (login, pass) {
     for (var i = config.users.length - 1; i >= 0; i--) {
