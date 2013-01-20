@@ -17,10 +17,12 @@ function getLang (req) {
 }
 
 function notFound (req, res) {
-    res.render('404.jade', {
-        referer: req.headers['referer'],
-        i18n: i18n[getLang(req)]
-    });
+    res
+        .status(404)
+        .render('404.jade', {
+            referer: req.headers['referer'],
+            i18n: i18n[getLang(req)]
+        });
 }
 
 exports.upload = function (req, res) {

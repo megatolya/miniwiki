@@ -15,8 +15,12 @@ build:
 	@node ./node_modules/less/bin/lessc $(BOWER_MODULES)/bootstrap/less/bootstrap.less > $(BOWER_MODULES)/bootstrap/css/bootstrap.css
 	@rm $(BOWER_MODULES)/bootstrap/js/bootstrap-popover.js
 	@cat $(BOWER_MODULES)/bootstrap/js/*.js > $(BOWER_MODULES)/bootstrap/js/bootstrap.js
-	node node_modules/borschik/bin/borschik -i static/components/bootstrap/js/bootstrap.js -t js > static/components/bootstrap/js/bootstrap.min.js
-	node node_modules/borschik/bin/borschik -i static/components/bootstrap/css/bootstrap.css -t css > static/components/bootstrap/css/bootstrap.min.css
+	@node node_modules/borschik/bin/borschik -i static/components/bootstrap/js/bootstrap.js -t js > static/components/bootstrap/js/bootstrap.min.js
+	@node node_modules/borschik/bin/borschik -i static/components/bootstrap/css/bootstrap.css -t css > static/components/bootstrap/css/bootstrap.min.css
+	@mkdir -p wiki_files
+	@echo '#Welcome to the miniwiki!\n\nThis is index page text.\n\nYou can edit like you want.' > wiki_files/index.wiki
+	@node i18n-maker.js > i18n.js
+
 
 clean:
 	-rm -rf $(NODE_MODULES)
@@ -24,6 +28,5 @@ clean:
 	rm ./static/js/socket.io.js
 	rm ./i18n.js
 start:
-	node i18n-maker.js > i18n.js
 	node server.js
 

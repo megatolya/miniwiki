@@ -11,9 +11,8 @@ pids
 logs
 results
 urls.txt
+wiki_files
 wiki_files/*
-!wiki_files/miniwiki
-!wiki_files/index.wiki
 npm-debug.log
 i18n.js
 static/js/socket.io.js

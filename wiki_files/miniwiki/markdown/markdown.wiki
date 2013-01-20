@@ -1,3 +1,0 @@
-[парсер](https://github.com/andris9/node-markdown)
-
-[синтаксис](http://daringfireball.net/projects/markdown/syntax)

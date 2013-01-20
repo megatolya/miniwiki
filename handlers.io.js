@@ -83,6 +83,7 @@ exports.handlers = function (socket) {
     })
 
     socket.on('removePage', function(data) {
+        console.log('msg');
         exec('rm -rf ' + config.wikiRoot + data.path, function() {
             socket.emit('alert', i18n.pageRemoved);
             socket.emit('clearTimeout', data.timeout);
