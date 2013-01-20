@@ -1,10 +1,11 @@
 include header
 .container-fluid.body
     .row-fluid
-        a.btn(href="?")=i18n.toWikiPage
-        a.btn(href="?z=history")= i18n.History
+        .btn-group
+            a.btn(href="?")=i18n.toWikiPage
+            a.btn(href="?z=history")= i18n.History
         h2= i18n.History
-        .span12 wiki-article
+        .span12.wiki-article
             .wiki-article-text
                 !{text}
 include footer

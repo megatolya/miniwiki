@@ -12,7 +12,14 @@ exports.handlers = function (socket) {
             if (err) throw err;
             fs.writeFile(config.wikiRoot + name + '/' + name + config.wikiFormat, '###:-)', function (err) {
                 if (err) throw err;
-                socket.emit('redirect', '/wiki/' + name);
+
+                fs.mkdir( config.wikiRoot + name + '/.wiki/', '0777', function(err) {
+                    fs.writeFile(config.wikiRoot + name  + '/.wiki/' + new Date().valueOf() + config.wikiFormat, '###:-)', function (err) {
+                        if (err) throw err;
+
+                        socket.emit('redirect', '/wiki/' + name );
+                    });
+                });
             });
         });
     });

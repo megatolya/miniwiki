@@ -30,10 +30,14 @@ app
     .get('/nightmode', handlers.checkAuth, handlers.nightMode)
     .get('/logout', handlers.logout)
     .get('/login', handlers.login)
-    .get('/wiki', handlers.checkAuth, handlers.index)
+    .get(/wiki\/?$/, handlers.checkAuth, handlers.index)
     .get('/terminal', handlers.checkAuth, handlers.terminal)
     .get('/favicon.ico', handlers.favicon)
-    .get('*', handlers.checkAuth, handlers.checkMobile, handlers.wiki)
+    //files
+    .get(/wiki\/(.+)\.(.*)$/, handlers.checkAuth, handlers.sendFile)
+    //rm files
+    .get(/remove\/(.+)\.(.*)$/, handlers.checkAuth, handlers.removeFile)
+    .get(/wiki\/(.*)/, handlers.checkAuth, handlers.checkMobile, handlers.wiki)
     .post('/', handlers.auth)
     .post('/upload', handlers.checkAuth, handlers.upload);
 
