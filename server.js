@@ -10,7 +10,7 @@ var express = require('express'),
 global.config = config;
 app
     .enable('trust proxy')
-    .set('views',__dirname + '/jade')
+    .set('views',__dirname + '/views')
     .set('view engine', 'jade')
     .use(express.errorHandler({
         dumpExceptions: true,
