@@ -8,7 +8,7 @@ html
         meta(name='apple-mobile-web-app-status-bar-style', content='black')
         link(rel='apple-touch-icon-precomposed', sizes='72x72', href='touch-icons/apple-touch-icon-72x72.png')
         link(rel='apple-touch-icon-precomposed', sizes='57x57', href='touch-icons/apple-touch-icon-57x57.png')
-        link(rel='stylesheet', href='/static/css/ratchet.css')
+        link(rel='stylesheet', href='/static/componentscss/ratchet.css')
         link(rel='stylesheet', href='/static/css/ios.css')
         script(src='/static/js/jquery.min.js')
         script(src='/static/js/ratchet.js')
@@ -30,7 +30,7 @@ html
             .content-padded
                     .wiki-article-text
                             !{page.text}
-                    - if (page.children.length  >  0) {
+                    - if (page.children.length  >  0)
                         .wiki-children
                                 h1= i18n.subPages
                                 ul.list
