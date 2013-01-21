@@ -3,7 +3,8 @@ var fs = require('fs'),
     format= '.json',
     $ = require('jquery'),
     i18n = {},
-    en = {};
+    en = {},
+    async = require('async');
 
 fs.readFile(__dirname + '/i18n/en.json', 'utf8', function (err, content) {
     if (err) throw err;
@@ -12,18 +13,20 @@ fs.readFile(__dirname + '/i18n/en.json', 'utf8', function (err, content) {
     fs.readdir(__dirname+'/i18n/', function(err, langs) {
         if (err) throw err;
 
+        var tasks = {};
         langs.forEach(function(lang){
-            lang = lang.replace(format, '');
-            fs.readFile(__dirname + '/i18n/' + lang + format, 'utf8', function (err, content) {
-                if (err) throw err;
+            tasks[lang] = function (callback) {
+                    lang = lang.replace(format, '');
+                fs.readFile(__dirname + '/i18n/' + lang + format, 'utf8', function (err, content) {
+                    if (err) throw err;
 
-                i18n[lang]=$.extend({}, en, JSON.parse(content));
-            });
+                    callback(null, $.extend({}, en, JSON.parse(content)));
+                });
+            };
+
+        });
+        async.parallel(tasks, function (err, res) {
+            console.dir(res);
         });
     });
 });
-
-
-setTimeout(function () {
-    console.log('module.exports=' + JSON.stringify(i18n));
-},1000);
